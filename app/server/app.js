@@ -25,16 +25,18 @@ import {
   getActiveBusiness,
   markStepComplete,
   previewCsvImport,
+  recordSession,
   recordInterventionAttempt,
   saveMenuItems,
   serializeBusiness,
   updateOptimizationLearning,
   upsertBusiness,
 } from './domain.js';
-import { submitInvoiceToLhdn, testLhdnCredentials } from './integrations/lhdn.js';
+import { parseLhdnError, submitInvoiceToLhdn, testLhdnCredentials } from './integrations/lhdn.js';
 import {
   buildTemplateMessage,
   extractIncomingWhatsAppEvents,
+  matchTemplate,
   sendWhatsAppTextMessage,
   verifyWebhookChallenge,
 } from './integrations/whatsapp.js';
@@ -165,6 +167,36 @@ export function createApp(rawStore) {
 
   app.get('/api/health', (_request, response) => {
     response.json({ ok: true, activationDefinition: ACTIVATION_DEFINITION });
+  });
+
+  app.post('/api/sessions/ping', (_request, response, next) => {
+    try {
+      const state = store.update((draft) => {
+        const business = getActiveBusiness(draft);
+        if (!business) {
+          return draft;
+        }
+
+        const sessionEvent = recordSession(business);
+        if (sessionEvent) {
+          appendLog(draft, 'session_recorded', {
+            businessId: business.id,
+            sessionCount: sessionEvent.properties.sessionCount,
+            isReturn: sessionEvent.properties.isReturn,
+            daysSinceSignup: sessionEvent.properties.daysSinceSignup,
+          });
+        }
+
+        return draft;
+      });
+
+      response.json({
+        recorded: true,
+        activeBusiness: state.activeBusinessId ?? null,
+      });
+    } catch (error) {
+      next(error);
+    }
   });
 
   app.get('/api/state', (_request, response) => {
@@ -492,15 +524,18 @@ export function createApp(rawStore) {
         }
       } catch (integrationError) {
         if (integrationError.message.includes('LHDN')) {
+          const diagnosis = parseLhdnError(integrationError.payload);
           invoice.lhdn = {
             status: 'failed',
             uuid: null,
             submissionUid: null,
             submittedAt: new Date().toISOString(),
             response: integrationError.payload || integrationError.message,
+            diagnosis,
           };
           appendEvent(business, 'LHDN_SUBMISSION_FAILED', {
             payload: integrationError.payload || integrationError.message,
+            diagnosis,
           });
           appendLog(state, 'lhdn_submission_failed', {
             businessId: business.id,
@@ -525,6 +560,7 @@ export function createApp(rawStore) {
           message: integrationError.message,
           details: formatErrorDetails(integrationError),
           integrationPayload: integrationError.payload || null,
+          diagnosis: integrationError.message.includes('LHDN') ? parseLhdnError(integrationError.payload) : null,
           ...buildStateResponse(store, state),
         });
         return;
@@ -631,6 +667,64 @@ export function createApp(rawStore) {
             timestamp: event.timestamp,
             payload: event.raw,
           });
+
+          const templates = business.templates?.whatsapp ?? [];
+          const credentials = store.getCredentials(business.id);
+          const matchedTemplate = matchTemplate(templates, event.text);
+
+          if (matchedTemplate && credentials?.whatsappAccessToken) {
+            const replyBody = matchedTemplate.response.replace(
+              '{business_name}',
+              business.profile?.businessName ?? 'your business',
+            );
+
+            sendWhatsAppTextMessage({
+              business,
+              credentials,
+              to: event.from,
+              body: replyBody,
+            })
+              .then((result) => {
+                store.update((draft) => {
+                  const draftBusiness = draft.businesses.find((candidate) => candidate.id === business.id);
+                  if (!draftBusiness) {
+                    return draft;
+                  }
+
+                  appendEvent(draftBusiness, 'WHATSAPP_AUTO_REPLY_SENT', {
+                    to: event.from,
+                    templateId: matchedTemplate.id,
+                    messageId: result.messageId,
+                  });
+                  appendLog(draft, 'whatsapp_auto_reply_sent', {
+                    businessId: draftBusiness.id,
+                    templateId: matchedTemplate.id,
+                    to: event.from,
+                    messageId: result.messageId,
+                  });
+                  return draft;
+                });
+              })
+              .catch((sendError) => {
+                store.update((draft) => {
+                  const draftBusiness = draft.businesses.find((candidate) => candidate.id === business.id);
+                  if (draftBusiness) {
+                    appendEvent(draftBusiness, 'WHATSAPP_AUTO_REPLY_FAILED', {
+                      to: event.from,
+                      templateId: matchedTemplate.id,
+                      error: sendError.message,
+                    });
+                  }
+                  appendLog(draft, 'whatsapp_auto_reply_failed', {
+                    businessId: business.id,
+                    templateId: matchedTemplate.id,
+                    to: event.from,
+                    error: sendError.message,
+                  });
+                  return draft;
+                });
+              });
+          }
         } else {
           appendLog(state, 'whatsapp_status_received', {
             businessId,

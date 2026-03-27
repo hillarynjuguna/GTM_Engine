@@ -6,6 +6,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createApp } from '../server/app.js';
 import { createFileStore } from '../server/store.js';
 import { createInitialState } from '../server/domain.js';
+import { parseLhdnError } from '../server/integrations/lhdn.js';
+import { matchTemplate } from '../server/integrations/whatsapp.js';
+import { DEFAULT_WHATSAPP_TEMPLATES } from '../shared/contracts.js';
 
 function buildServer() {
   const runtimePath = path.join(process.cwd(), 'server', 'runtime', `test-${crypto.randomUUID()}.db`);
@@ -37,6 +40,64 @@ async function createBusinessProfile(app, overrides = {}) {
 
 beforeEach(() => {
   vi.restoreAllMocks();
+});
+
+describe('Integration helpers', () => {
+  it('parses a TIN rejection into a diagnosis', () => {
+    const diagnosis = parseLhdnError({
+      rejectedDocuments: [
+        {
+          error: [
+            {
+              code: 'CF001',
+              message: 'Taxpayer TIN is invalid.',
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(diagnosis).toHaveLength(1);
+    expect(diagnosis[0].code).toBe('CF001');
+    expect(diagnosis[0].fix).toContain('TIN');
+  });
+
+  it('parses a schema validation rejection into a diagnosis', () => {
+    const diagnosis = parseLhdnError({
+      rejectedDocuments: [
+        {
+          error: [
+            {
+              code: 'CF999',
+              message: 'Schema validation failed: AddressLine is required.',
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(diagnosis[0].fix).toContain('schema validation');
+  });
+
+  it('falls back safely for unknown payloads', () => {
+    const diagnosis = parseLhdnError('Unexpected gateway failure');
+
+    expect(diagnosis).toHaveLength(1);
+    expect(diagnosis[0].code).toBe('UNKNOWN');
+    expect(diagnosis[0].message).toContain('Unexpected gateway failure');
+  });
+
+  it('returns null for empty payloads', () => {
+    expect(parseLhdnError(null)).toBeNull();
+  });
+
+  it('matches WhatsApp templates by keyword rules', () => {
+    expect(matchTemplate(DEFAULT_WHATSAPP_TEMPLATES, 'menu please')?.id).toBe('menu-request');
+    expect(matchTemplate(DEFAULT_WHATSAPP_TEMPLATES, 'open now?')?.id).toBe('hours');
+    expect(matchTemplate(DEFAULT_WHATSAPP_TEMPLATES, 'random nonsense xyz')).toBeNull();
+    expect(matchTemplate([], 'menu')).toBeNull();
+    expect(matchTemplate(DEFAULT_WHATSAPP_TEMPLATES, null)).toBeNull();
+  });
 });
 
 describe('Tapau GTM onboarding API', () => {
@@ -183,6 +244,47 @@ describe('Tapau GTM onboarding API', () => {
     expect(business.events.filter((event) => event.event === 'CREDENTIAL_TEST_SUCCESS')).toHaveLength(2);
   });
 
+  it('records a session ping once per 30 minutes and exposes retention data', async () => {
+    const { app, runtimePath } = buildServer();
+    const profileResponse = await createBusinessProfile(app, { businessName: 'Return Visit Cafe' });
+    const businessId = profileResponse.body.activeBusiness.id;
+
+    const firstPing = await request(app).post('/api/sessions/ping').send({}).expect(200);
+    expect(firstPing.body.recorded).toBe(true);
+
+    let state = createFileStore(runtimePath).read();
+    let business = state.businesses.find((candidate) => candidate.id === businessId);
+    expect(business.events.filter((event) => event.event === 'session_started')).toHaveLength(1);
+
+    await request(app).post('/api/sessions/ping').send({}).expect(200);
+
+    state = createFileStore(runtimePath).read();
+    business = state.businesses.find((candidate) => candidate.id === businessId);
+    expect(business.events.filter((event) => event.event === 'session_started')).toHaveLength(1);
+
+    business.activationAt = '2026-03-20T08:00:00.000Z';
+    business.onboardingState = 'ACTIVATED';
+    business.events[0].timestamp = '2026-03-21T09:00:00.000Z';
+    business.events.push({
+      id: 'evt-return-late',
+      event: 'session_started',
+      timestamp: '2026-03-27T07:30:00.000Z',
+      properties: {
+        daysSinceSignup: 7,
+        isReturn: true,
+        sessionCount: 2,
+        onboardingState: 'ACTIVATED',
+        activationAt: '2026-03-20T08:00:00.000Z',
+      },
+    });
+    createFileStore(runtimePath).write(state);
+
+    const report = await request(app).get('/api/intelligence/report').expect(200);
+    expect(report.body.retention).toBeTruthy();
+    expect(report.body.retention.sampleSize).toBeGreaterThan(0);
+    expect(report.body.retention.d7).toBeGreaterThan(0);
+  });
+
   it('routes incoming WhatsApp webhook messages to the business that owns the phone number id', async () => {
     const { app, runtimePath } = buildServer();
     const profileResponse = await createBusinessProfile(app, { businessName: 'Webhook Warung' });
@@ -248,6 +350,151 @@ describe('Tapau GTM onboarding API', () => {
     const state = createFileStore(runtimePath).read();
     const business = state.businesses.find((candidate) => candidate.id === businessId);
     expect(business.events.some((event) => event.event === 'WHATSAPP_MESSAGE_RECEIVED')).toBe(true);
+  });
+
+  it('dispatches a WhatsApp auto-reply when an inbound message matches a saved template', async () => {
+    const { app, runtimePath } = buildServer();
+    const profileResponse = await createBusinessProfile(app, {
+      businessName: 'Auto Reply Warung',
+      phone: '60114445555',
+    });
+    const businessId = profileResponse.body.activeBusiness.id;
+
+    await request(app).post('/api/templates/generate').send({}).expect(200);
+
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(jsonResponse({ access_token: 'sandbox-token', expires_in: 3600 }))
+        .mockResolvedValueOnce(jsonResponse({ messages: [{ id: 'wamid.saved' }] })),
+    );
+
+    await request(app)
+      .post('/api/credentials/save')
+      .send({
+        lhdnClientId: 'client-auto-reply',
+        lhdnClientSecret: 'secret-auto-reply',
+        whatsappAccessToken: 'token-auto-reply',
+        whatsappPhoneNumberId: 'wa-auto-123',
+        whatsappVerifyToken: 'verify-auto-123',
+        whatsappTestRecipient: '60114445555',
+      })
+      .expect(201);
+
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse({ messages: [{ id: 'wamid.reply' }] })));
+
+    await request(app)
+      .post('/api/whatsapp/webhook')
+      .send({
+        entry: [
+          {
+            changes: [
+              {
+                value: {
+                  metadata: { phone_number_id: 'wa-auto-123' },
+                  messages: [
+                    {
+                      from: '60119990000',
+                      timestamp: '1710000000',
+                      text: { body: 'menu please' },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      })
+      .expect(200);
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const state = createFileStore(runtimePath).read();
+    const business = state.businesses.find((candidate) => candidate.id === businessId);
+    expect(business.events.some((event) => event.event === 'WHATSAPP_AUTO_REPLY_SENT')).toBe(true);
+  });
+
+  it('returns LHDN diagnosis details when submission is rejected', async () => {
+    const { app, runtimePath } = buildServer();
+    await createBusinessProfile(app, { businessName: 'Diagnosis Diner' });
+    await request(app).post('/api/templates/generate').send({}).expect(200);
+
+    const importResponse = await request(app)
+      .post('/api/import/confirm')
+      .send({
+        source: 'manual',
+        items: [{ name: 'Nasi Lemak', price: 8, category: 'Main' }],
+      })
+      .expect(200);
+
+    const itemId = importResponse.body.activeBusiness.menuItems[0].id;
+
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(jsonResponse({ access_token: 'sandbox-token', expires_in: 3600 }))
+        .mockResolvedValueOnce(jsonResponse({ messages: [{ id: 'wamid.saved' }] })),
+    );
+
+    await request(app)
+      .post('/api/credentials/save')
+      .send({
+        lhdnClientId: 'client-diagnosis',
+        lhdnClientSecret: 'secret-diagnosis',
+        whatsappAccessToken: 'token-diagnosis',
+        whatsappPhoneNumberId: 'wa-diagnosis-123',
+        whatsappVerifyToken: 'verify-diagnosis-123',
+        whatsappTestRecipient: '60118887777',
+      })
+      .expect(201);
+
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(jsonResponse({ access_token: 'sandbox-token-2', expires_in: 3600 }))
+        .mockResolvedValueOnce(
+          jsonResponse(
+            {
+              rejectedDocuments: [
+                {
+                  error: [
+                    {
+                      code: 'CF001',
+                      message: 'Taxpayer TIN is invalid.',
+                    },
+                  ],
+                },
+              ],
+            },
+            400,
+          ),
+        ),
+    );
+
+    const response = await request(app)
+      .post('/api/invoices/create')
+      .send({
+        customerName: 'Diagnosis Customer',
+        customerPhone: '60112223333',
+        lineItems: [{ itemId, quantity: 1 }],
+        source: 'dashboard',
+        invoiceType: 'real',
+        submitToLhdn: true,
+        sendWhatsappConfirmation: false,
+      })
+      .expect(400);
+
+    expect(response.body.diagnosis).toHaveLength(1);
+    expect(response.body.diagnosis[0].code).toBe('CF001');
+    expect(response.body.diagnosis[0].fix).toContain('TIN');
+    expect(response.body.activeBusiness.invoices.at(-1).lhdn.status).toBe('failed');
+    expect(response.body.activeBusiness.invoices.at(-1).lhdn.diagnosis).toHaveLength(1);
+
+    const reloadedState = createFileStore(runtimePath).read();
+    expect(reloadedState.businesses[0].invoices.at(-1).lhdn.diagnosis[0].code).toBe('CF001');
   });
 
   it('persists applied optimizations and learned lifecycle updates after intelligence reporting', async () => {

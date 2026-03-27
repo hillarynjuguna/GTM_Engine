@@ -115,6 +115,54 @@ export function buildTemplateMessage(business, templateId, replacements = {}) {
   return message;
 }
 
+export function matchTemplate(templates, messageText) {
+  if (!Array.isArray(templates) || templates.length === 0 || !messageText) {
+    return null;
+  }
+
+  const normalizedMessage = String(messageText).trim().toLowerCase();
+  if (!normalizedMessage) {
+    return null;
+  }
+
+  for (const template of templates) {
+    const trigger = String(template?.trigger ?? '').trim();
+    if (!trigger) {
+      continue;
+    }
+
+    const containsAnyMatch = trigger.match(/^contains_any\((.+)\)$/i);
+    if (containsAnyMatch) {
+      const keywords = containsAnyMatch[1]
+        .split(',')
+        .map((keyword) => keyword.trim().toLowerCase())
+        .filter(Boolean);
+      if (keywords.some((keyword) => normalizedMessage.includes(keyword))) {
+        return template;
+      }
+      continue;
+    }
+
+    const startsWithMatch = trigger.match(/^starts_with_any\((.+)\)$/i);
+    if (startsWithMatch) {
+      const keywords = startsWithMatch[1]
+        .split(',')
+        .map((keyword) => keyword.trim().toLowerCase())
+        .filter(Boolean);
+      if (keywords.some((keyword) => normalizedMessage.startsWith(keyword))) {
+        return template;
+      }
+      continue;
+    }
+
+    if (normalizedMessage.includes(trigger.toLowerCase())) {
+      return template;
+    }
+  }
+
+  return null;
+}
+
 function assertWhatsAppConfig(config) {
   if (!config.accessToken || !config.phoneNumberId) {
     throw new Error('Missing WhatsApp Cloud API credentials for this business. Validate and save them first.');

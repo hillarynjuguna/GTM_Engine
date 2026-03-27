@@ -40,6 +40,9 @@ const ACTIVATION_EVENTS = {
   lhdnFailed: 'LHDN_SUBMISSION_FAILED',
   whatsappSent: 'WHATSAPP_MESSAGE_SENT',
   whatsappReceived: 'WHATSAPP_MESSAGE_RECEIVED',
+  whatsappAutoReplySent: 'WHATSAPP_AUTO_REPLY_SENT',
+  whatsappAutoReplyFailed: 'WHATSAPP_AUTO_REPLY_FAILED',
+  sessionStarted: 'session_started',
   activated: 'activation_qualified',
 };
 
@@ -192,6 +195,8 @@ export function analyzeActivation(state) {
       const hasLhdn = events.some((e) => e.event === ACTIVATION_EVENTS.lhdnSuccess);
       const hasWhatsApp = events.some((e) => e.event === ACTIVATION_EVENTS.whatsappSent);
       const hasLhdnFailed = events.some((e) => e.event === ACTIVATION_EVENTS.lhdnFailed);
+      const autoRepliesSent = events.filter((event) => event.event === ACTIVATION_EVENTS.whatsappAutoReplySent).length;
+      const autoRepliesFailed = events.filter((event) => event.event === ACTIVATION_EVENTS.whatsappAutoReplyFailed).length;
 
       blockers.push({
         businessId: business.id,
@@ -200,6 +205,8 @@ export function analyzeActivation(state) {
         hasLhdnSubmission: hasLhdn,
         hasWhatsAppSent: hasWhatsApp,
         hasLhdnFailure: hasLhdnFailed,
+        autoRepliesSent,
+        autoRepliesFailed,
         hoursSinceLastActivity: round(hoursSinceLastActivity, 1),
         status: hoursSinceLastActivity > THRESHOLDS.hardAbandonmentHours
           ? 'hard_abandoned'
@@ -224,11 +231,45 @@ export function analyzeActivation(state) {
       }
     : null;
 
+  const retentionCounts = { d1: 0, d3: 0, d7: 0, d14: 0, d30: 0 };
+  const retentionSample = activated.length;
+
+  for (const business of businesses.filter((candidate) => candidate.activationAt)) {
+    const activationTime = new Date(business.activationAt).getTime();
+    const sessions = (business.events ?? []).filter((event) => event.event === ACTIVATION_EVENTS.sessionStarted);
+
+    for (const [key, days] of [['d1', 1], ['d3', 3], ['d7', 7], ['d14', 14], ['d30', 30]]) {
+      const windowStart = activationTime + (days - 1) * 24 * 60 * 60 * 1000;
+      const windowEnd = activationTime + days * 24 * 60 * 60 * 1000;
+      if (
+        sessions.some((session) => {
+          const sessionTime = new Date(session.timestamp).getTime();
+          return sessionTime >= windowStart && sessionTime <= windowEnd;
+        })
+      ) {
+        retentionCounts[key]++;
+      }
+    }
+  }
+
+  const retention =
+    retentionSample === 0
+      ? null
+      : {
+          d1: round(retentionCounts.d1 / retentionSample, 4),
+          d3: round(retentionCounts.d3 / retentionSample, 4),
+          d7: round(retentionCounts.d7 / retentionSample, 4),
+          d14: round(retentionCounts.d14 / retentionSample, 4),
+          d30: round(retentionCounts.d30 / retentionSample, 4),
+          sampleSize: retentionSample,
+        };
+
   return {
     totalBusinesses: total,
     activatedCount: activated.length,
     activationRate: total > 0 ? round(activated.length / total, 4) : 0,
     timeToActivation: distribution,
+    retention,
     activatedBusinesses: activated,
     blockers,
   };
@@ -516,7 +557,7 @@ export function deriveOptimizationLearningUpdates(state, impacts = measureOptimi
 // ---------------------------------------------------------------------------
 
 export function generateOptimizations(insights) {
-  const { onboarding, activation, friction, behavior } = insights;
+  const { onboarding, activation, friction, behavior, state } = insights;
   const recommendations = [];
   const codexTasks = [];
   const priorityFixes = [];
@@ -719,16 +760,17 @@ export function generateOptimizations(insights) {
   }
 
   // --- Instrumentation gaps ---
-  const hasRetentionEvents = (state) => {
-    const allEvents = (state?.businesses ?? []).flatMap((b) => b.events ?? []);
-    return allEvents.some((e) => e.event === 'session_started' || e.event === 'return_visit');
-  };
+  const hasRetentionEvents = (state?.businesses ?? [])
+    .flatMap((business) => business.events ?? [])
+    .some((event) => event.event === ACTIVATION_EVENTS.sessionStarted || event.event === 'return_visit');
 
-  instrumentationGaps.push({
-    missingEvent: 'session_started',
-    reason: 'Cannot measure return visits or D1/D7/D30 retention without session tracking',
-    priority: 'P1',
-  });
+  if (!hasRetentionEvents) {
+    instrumentationGaps.push({
+      missingEvent: 'session_started',
+      reason: 'Cannot measure return visits or D1/D7/D30 retention without session tracking',
+      priority: 'P1',
+    });
+  }
 
   instrumentationGaps.push({
     missingEvent: 'credential_step_viewed',
@@ -816,6 +858,7 @@ export function generateIntelligenceReport(state) {
       credentialStats: onboarding.credentialStats,
     },
     timeToActivation: activation.timeToActivation,
+    retention: activation.retention,
     activationSummary: {
       total: activation.totalBusinesses,
       activated: activation.activatedCount,
@@ -882,6 +925,7 @@ function emptyActivationResult() {
     activatedCount: 0,
     activationRate: 0,
     timeToActivation: null,
+    retention: null,
     activatedBusinesses: [],
     blockers: [],
   };

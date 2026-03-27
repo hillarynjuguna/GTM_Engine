@@ -70,7 +70,14 @@ export default function App() {
   const [notice, setNotice] = useState('');
 
   useEffect(() => {
-    loadState();
+    loadState().then(() => {
+      fetch('/api/sessions/ping', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).catch(() => {});
+    });
   }, []);
 
   const businesses = appState?.businesses ?? [];
@@ -127,6 +134,14 @@ export default function App() {
     try {
       return await action();
     } catch (requestError) {
+      if (requestError.data?.activeBusiness || requestError.data?.businesses || requestError.data?.dashboard) {
+        setAppState((current) => ({
+          ...(current ?? {}),
+          activeBusiness: requestError.data.activeBusiness ?? current?.activeBusiness ?? null,
+          businesses: requestError.data.businesses ?? current?.businesses ?? [],
+          dashboard: requestError.data.dashboard ?? current?.dashboard ?? null,
+        }));
+      }
       setError(requestError.message);
       throw requestError;
     } finally {
@@ -921,6 +936,10 @@ export default function App() {
                 <span className="pill">{activeBusiness?.whatsapp?.status ?? 'pending'}</span>
                 <span className="pill">{activeBusiness?.whatsapp?.phoneNumber ?? 'No number saved'}</span>
                 <span className="pill">
+                  Auto-replies sent:{' '}
+                  {activeBusiness?.events?.filter((event) => event.event === 'WHATSAPP_AUTO_REPLY_SENT').length ?? 0}
+                </span>
+                <span className="pill">
                   Webhook: {`${window.location.origin}/api/whatsapp/webhook`}
                 </span>
               </div>
@@ -1017,16 +1036,38 @@ export default function App() {
                 Execute sample workflow
               </button>
             </div>
-            {activeBusiness?.invoices?.length ? (
-              <div className="pill-row">
-                <span className="pill">
-                  Last LHDN status: {activeBusiness.invoices.at(-1)?.lhdn?.status ?? 'pending'}
-                </span>
-                <span className="pill">
-                  UUID: {activeBusiness.invoices.at(-1)?.lhdn?.uuid ?? 'Pending'}
-                </span>
-              </div>
-            ) : null}
+            {activeBusiness?.invoices?.length
+              ? (() => {
+                  const lastInvoice = activeBusiness.invoices.at(-1);
+                  const lhdn = lastInvoice?.lhdn ?? {};
+
+                  return (
+                    <div className="stack">
+                      <div className="pill-row">
+                        <span className="pill">Last LHDN status: {lhdn.status ?? 'pending'}</span>
+                        <span className="pill">UUID: {lhdn.uuid ?? 'Pending'}</span>
+                      </div>
+                      {lhdn.status === 'failed' && lhdn.diagnosis?.length > 0 ? (
+                        <div className="card stack" style={{ borderColor: 'rgba(255, 100, 100, 0.4)' }}>
+                          <strong style={{ color: '#ff8d89' }}>LHDN Submission Failed</strong>
+                          {lhdn.diagnosis.map((diagnosis, index) => (
+                            <div key={`${diagnosis.code || 'diagnosis'}-${index}`} className="stack" style={{ gap: '6px' }}>
+                              {diagnosis.code ? (
+                                <code style={{ fontSize: '0.8rem' }}>
+                                  {diagnosis.code}: {diagnosis.message}
+                                </code>
+                              ) : (
+                                <code style={{ fontSize: '0.8rem' }}>{diagnosis.message}</code>
+                              )}
+                              <p style={{ color: '#fdcb6e', margin: 0 }}>-> {diagnosis.fix}</p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })()
+              : null}
           </form>
         </section>
 
@@ -1196,7 +1237,7 @@ function CredentialFeedback({ title, status }) {
 }
 
 function IntelligencePanel({ report, onApplyOptimization }) {
-  const { funnel, activationSummary, frictionHotspots, behavioralClusters, optimizations, executionPayload, impacts } = report;
+  const { funnel, activationSummary, frictionHotspots, behavioralClusters, optimizations, executionPayload, impacts, retention } = report;
 
   return (
     <div className="stack intel-panel">
@@ -1221,6 +1262,27 @@ function IntelligencePanel({ report, onApplyOptimization }) {
           </div>
         ) : null}
       </div>
+
+      {retention ? (
+        <div className="intel-section">
+          <strong className="intel-heading">Retention cohorts (activated users)</strong>
+          <div className="intel-meta">n = {retention.sampleSize} activated businesses</div>
+          <div className="metrics-grid">
+            {[
+              ['D1', retention.d1],
+              ['D3', retention.d3],
+              ['D7', retention.d7],
+              ['D14', retention.d14],
+              ['D30', retention.d30],
+            ].map(([label, rate]) => (
+              <div key={label} className="metric-card">
+                <span>{label}</span>
+                <strong>{rate != null ? `${(rate * 100).toFixed(0)}%` : '--'}</strong>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       {frictionHotspots?.length > 0 ? (
         <div className="intel-section">

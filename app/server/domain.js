@@ -146,6 +146,35 @@ export function appendEvent(business, event, properties = {}) {
   return entry;
 }
 
+export function recordSession(business) {
+  try {
+    const now = Date.now();
+    const events = business.events ?? [];
+    const priorSessions = events.filter((event) => event.event === 'session_started');
+
+    if (priorSessions.length > 0) {
+      const lastSession = priorSessions[priorSessions.length - 1];
+      const minutesSinceLast = (now - new Date(lastSession.timestamp).getTime()) / (1000 * 60);
+      if (minutesSinceLast < 30) {
+        return null;
+      }
+    }
+
+    const signupMs = new Date(business.createdAt).getTime();
+    const daysSinceSignup = Math.floor((now - signupMs) / (1000 * 60 * 60 * 24));
+
+    return appendEvent(business, 'session_started', {
+      daysSinceSignup,
+      isReturn: priorSessions.length > 0,
+      sessionCount: priorSessions.length + 1,
+      onboardingState: business.onboardingState,
+      activationAt: business.activationAt ?? null,
+    });
+  } catch {
+    return null;
+  }
+}
+
 export function generateTemplates(profile) {
   const invoice = {
     invoice: {
@@ -342,6 +371,7 @@ export function createInvoice(business, payload) {
       submissionUid: null,
       submittedAt: null,
       response: null,
+      diagnosis: null,
     },
   };
 

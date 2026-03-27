@@ -196,6 +196,30 @@ describe('Activation Intelligence Engine', () => {
       expect(result.blockers[0].businessId).toBe('biz-stuck');
       expect(result.blockers[0].hasLhdnSubmission).toBe(false);
     });
+
+    it('computes retention cohorts from session_started events', () => {
+      const retentionState = buildMockState();
+      retentionState.businesses[0].events.push({
+        id: 'evt-retention-d1',
+        event: 'session_started',
+        timestamp: '2026-03-28T07:00:00.000Z',
+        properties: {},
+      });
+      retentionState.businesses[1].activationAt = null;
+      retentionState.businesses[2].events.push({
+        id: 'evt-retention-d3',
+        event: 'session_started',
+        timestamp: '2026-03-29T08:30:00.000Z',
+        properties: {},
+      });
+
+      const result = analyzeActivation(retentionState);
+
+      expect(result.retention).toBeTruthy();
+      expect(result.retention.sampleSize).toBe(2);
+      expect(result.retention.d1).toBeGreaterThan(0);
+      expect(result.retention.d3).toBeGreaterThan(0);
+    });
   });
 
   describe('Agent 3: detectFriction', () => {
@@ -359,6 +383,7 @@ describe('Activation Intelligence Engine', () => {
       expect(report).toHaveProperty('funnel');
       expect(report).toHaveProperty('dropOffMap');
       expect(report).toHaveProperty('timeToActivation');
+      expect(report).toHaveProperty('retention');
       expect(report).toHaveProperty('activationSummary');
       expect(report).toHaveProperty('frictionHotspots');
       expect(report).toHaveProperty('behavioralClusters');

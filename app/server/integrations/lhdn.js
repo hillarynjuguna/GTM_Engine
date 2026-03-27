@@ -112,6 +112,40 @@ export async function testLhdnCredentials({
   };
 }
 
+export function parseLhdnError(payload) {
+  if (!payload) {
+    return null;
+  }
+
+  const raw = typeof payload === 'string' ? payload : JSON.stringify(payload);
+  const body = typeof payload === 'object' && payload !== null ? payload : {};
+  const rejections = body?.rejectedDocuments?.[0]?.error ?? [];
+  const errors = Array.isArray(rejections) ? rejections : [rejections];
+  const diagnoses = errors
+    .filter(Boolean)
+    .map((error) => {
+      const code = error?.code ?? '';
+      const message = error?.message ?? error?.description ?? raw;
+      return {
+        code,
+        message,
+        fix: mapLhdnCodeToFix(code, message),
+      };
+    });
+
+  if (diagnoses.length === 0) {
+    return [
+      {
+        code: 'UNKNOWN',
+        message: raw,
+        fix: mapLhdnCodeToFix('', raw),
+      },
+    ];
+  }
+
+  return diagnoses;
+}
+
 export function buildLhdnInvoiceDocument({ invoice, business, config }) {
   const issueDate = invoice.issuedAt.slice(0, 10);
   const issueTime = new Date(invoice.issuedAt).toISOString().slice(11, 19) + 'Z';
@@ -355,4 +389,55 @@ function createIntegrationError(message, status, payload) {
   error.status = status;
   error.payload = payload;
   return error;
+}
+
+function mapLhdnCodeToFix(code, message) {
+  const normalizedCode = String(code ?? '').toUpperCase();
+  const normalizedMessage = String(message ?? '').toLowerCase();
+
+  if (normalizedCode === 'CF001' || normalizedMessage.includes('tin') || normalizedMessage.includes('taxpayer')) {
+    return 'TIN number is invalid or not registered in MyInvois. Verify the TIN at mytax.hasil.gov.my before resubmitting.';
+  }
+
+  if (
+    normalizedCode === 'CF003' ||
+    normalizedMessage.includes('brn') ||
+    normalizedMessage.includes('registration')
+  ) {
+    return 'Business Registration Number (BRN) does not match LHDN records. Check SSM registration and ensure the BRN field is in the correct format (for example 202401012345).';
+  }
+
+  if (normalizedCode === 'CF004' || normalizedMessage.includes('msic')) {
+    return 'MSIC code is invalid. Use 56101 for restaurants, 56103 for cafes, 56210 for catering, or 10710 for bakeries.';
+  }
+
+  if (
+    normalizedCode === 'CF008' ||
+    normalizedMessage.includes('sst') ||
+    normalizedMessage.includes('tax registration')
+  ) {
+    return 'SST registration number is invalid. If the business is not SST-registered, leave the SST field blank instead of entering placeholder text.';
+  }
+
+  if (
+    normalizedCode === '401' ||
+    normalizedMessage.includes('unauthorized') ||
+    normalizedMessage.includes('401')
+  ) {
+    return 'LHDN access token has expired or the client credentials are invalid. Re-test and re-save credentials in Credential Onboarding.';
+  }
+
+  if (normalizedMessage.includes('document') && normalizedMessage.includes('duplicate')) {
+    return 'This invoice number has already been submitted to LHDN. Increment the invoice number or void the duplicate before resubmitting.';
+  }
+
+  if (
+    normalizedMessage.includes('schema') ||
+    normalizedMessage.includes('validation') ||
+    normalizedMessage.includes('required')
+  ) {
+    return 'The invoice failed LHDN schema validation. Confirm TIN, BRN, address, city, postcode, and state code are populated before generating another invoice.';
+  }
+
+  return 'Unrecognised LHDN error. Copy the error code and message above and check the MyInvois developer portal for the specific rejection reason.';
 }

@@ -10,7 +10,9 @@ export async function api(path, options = {}) {
   const data = await response.json();
   if (!response.ok) {
     const detail = data.details ? ` ${data.details}` : '';
-    throw new Error(`${data.message || 'Request failed.'}${detail}`.trim());
+    const error = new Error(`${data.message || 'Request failed.'}${detail}`.trim());
+    error.data = data;
+    throw error;
   }
   return data;
 }
