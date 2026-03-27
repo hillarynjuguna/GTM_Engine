@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tapau GTM — Metrics Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">⚡</span>
+            <span class="logo-text">Tapau GTM</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-section="overview">
+                <span class="nav-icon">📊</span> Overview
+            </a>
+            <a href="#" class="nav-item" data-section="acquisition">
+                <span class="nav-icon">📣</span> Acquisition
+            </a>
+            <a href="#" class="nav-item" data-section="activation">
+                <span class="nav-icon">🚀</span> Activation
+            </a>
+            <a href="#" class="nav-item" data-section="retention">
+                <span class="nav-icon">🔄</span> Retention
+            </a>
+            <a href="#" class="nav-item" data-section="scorecard">
+                <span class="nav-icon">🎯</span> Readiness
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="pilot-badge">
+                <span class="pilot-dot"></span>
+                60-Day Pilot
+            </div>
+            <span class="pilot-date">Week 3 of 8</span>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main" id="main">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1 id="page-title">Overview</h1>
+                <span class="header-period">Last 7 days · Mar 20–26, 2025</span>
+            </div>
+            <div class="header-right">
+                <select class="period-select" id="period-select">
+                    <option value="7d" selected>Last 7 days</option>
+                    <option value="14d">Last 14 days</option>
+                    <option value="30d">Last 30 days</option>
+                    <option value="all">All time</option>
+                </select>
+            </div>
+        </header>
+
+        <!-- Overview Section -->
+        <section class="section" id="section-overview">
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">Total Leads</span>
+                        <span class="kpi-trend trend-up">↑ 24%</span>
+                    </div>
+                    <div class="kpi-value">127</div>
+                    <div class="kpi-sub">vs 102 last week</div>
+                    <div class="kpi-bar">
+                        <div class="kpi-bar-fill" style="width: 64%"></div>
+                    </div>
+                    <div class="kpi-target">Target: 200</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">CAC</span>
+                        <span class="kpi-trend trend-down">↓ 12%</span>
+                    </div>
+                    <div class="kpi-value">RM 187</div>
+                    <div class="kpi-sub">vs RM 213 last week</div>
+                    <div class="kpi-bar">
+                        <div class="kpi-bar-fill bar-green" style="width: 75%"></div>
+                    </div>
+                    <div class="kpi-target">Target: < RM 250</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">Activation Rate</span>
+                        <span class="kpi-trend trend-up">↑ 8%</span>
+                    </div>
+                    <div class="kpi-value">64%</div>
+                    <div class="kpi-sub">vs 56% last week</div>
+                    <div class="kpi-bar">
+                        <div class="kpi-bar-fill bar-green" style="width: 64%"></div>
+                    </div>
+                    <div class="kpi-target">Target: > 60%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">D7 Retention</span>
+                        <span class="kpi-trend trend-up">↑ 5%</span>
+                    </div>
+                    <div class="kpi-value">78%</div>
+                    <div class="kpi-sub">vs 73% last week</div>
+                    <div class="kpi-bar">
+                        <div class="kpi-bar-fill bar-yellow" style="width: 78%"></div>
+                    </div>
+                    <div class="kpi-target">Target: > 80%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">MRR</span>
+                        <span class="kpi-trend trend-up">↑ 31%</span>
+                    </div>
+                    <div class="kpi-value">RM 3,476</div>
+                    <div class="kpi-sub">44 paying users</div>
+                    <div class="kpi-bar">
+                        <div class="kpi-bar-fill" style="width: 35%"></div>
+                    </div>
+                    <div class="kpi-target">Target: RM 10,000</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">Time to Value</span>
+                        <span class="kpi-trend trend-down">↓ 15%</span>
+                    </div>
+                    <div class="kpi-value">42 min</div>
+                    <div class="kpi-sub">median, vs 49 min last week</div>
+                    <div class="kpi-bar">
+                        <div class="kpi-bar-fill bar-green" style="width: 70%"></div>
+                    </div>
+                    <div class="kpi-target">Target: < 60 min</div>
+                </div>
+            </div>
+
+            <!-- Funnel Visualization -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Acquisition → Activation Funnel</h3>
+                    <span class="card-badge">This Week</span>
+                </div>
+                <div class="funnel">
+                    <div class="funnel-step">
+                        <div class="funnel-bar-container">
+                            <div class="funnel-bar" style="width: 100%">
+                                <span class="funnel-count">1,240</span>
+                            </div>
+                        </div>
+                        <span class="funnel-label">Page Views</span>
+                    </div>
+                    <div class="funnel-arrow">→</div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar-container">
+                            <div class="funnel-bar" style="width: 52%">
+                                <span class="funnel-count">127</span>
+                            </div>
+                        </div>
+                        <span class="funnel-label">Leads</span>
+                        <span class="funnel-rate">10.2%</span>
+                    </div>
+                    <div class="funnel-arrow">→</div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar-container">
+                            <div class="funnel-bar bar-green" style="width: 35%">
+                                <span class="funnel-count">68</span>
+                            </div>
+                        </div>
+                        <span class="funnel-label">Signups</span>
+                        <span class="funnel-rate">53.5%</span>
+                    </div>
+                    <div class="funnel-arrow">→</div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar-container">
+                            <div class="funnel-bar bar-green" style="width: 28%">
+                                <span class="funnel-count">44</span>
+                            </div>
+                        </div>
+                        <span class="funnel-label">Activated</span>
+                        <span class="funnel-rate">64.7%</span>
+                    </div>
+                    <div class="funnel-arrow">→</div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar-container">
+                            <div class="funnel-bar bar-accent" style="width: 22%">
+                                <span class="funnel-count">34</span>
+                            </div>
+                        </div>
+                        <span class="funnel-label">Paying</span>
+                        <span class="funnel-rate">77.3%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Trend -->
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Weekly Signups</h3>
+                    </div>
+                    <div class="chart-bars">
+                        <div class="chart-bar-item">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-vertical" style="height: 30%"><span>12</span></div>
+                            </div>
+                            <span class="chart-bar-label">W1</span>
+                        </div>
+                        <div class="chart-bar-item">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-vertical" style="height: 50%"><span>22</span></div>
+                            </div>
+                            <span class="chart-bar-label">W2</span>
+                        </div>
+                        <div class="chart-bar-item">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-vertical active" style="height: 75%"><span>34</span></div>
+                            </div>
+                            <span class="chart-bar-label">W3</span>
+                        </div>
+                        <div class="chart-bar-item">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-vertical dimmed" style="height: 45%"><span>—</span></div>
+                            </div>
+                            <span class="chart-bar-label">W4</span>
+                        </div>
+                        <div class="chart-bar-item">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-vertical dimmed" style="height: 35%"><span>—</span></div>
+                            </div>
+                            <span class="chart-bar-label">W5</span>
+                        </div>
+                        <div class="chart-bar-item">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-vertical dimmed" style="height: 25%"><span>—</span></div>
+                            </div>
+                            <span class="chart-bar-label">W6</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Revenue Growth</h3>
+                    </div>
+                    <div class="chart-bars">
+                        <div class="chart-bar-item">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-vertical bar-green" style="height: 20%"><span>RM 790</span></div>
+                            </div>
+                            <span class="chart-bar-label">W1</span>
+                        </div>
+                        <div class="chart-bar-item">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-vertical bar-green" style="height: 45%"><span>RM 1,896</span></div>
+                            </div>
+                            <span class="chart-bar-label">W2</span>
+                        </div>
+                        <div class="chart-bar-item">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-vertical bar-green active" style="height: 70%"><span>RM 3,476</span></div>
+                            </div>
+                            <span class="chart-bar-label">W3</span>
+                        </div>
+                        <div class="chart-bar-item">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-vertical dimmed" style="height: 40%"><span>—</span></div>
+                            </div>
+                            <span class="chart-bar-label">W4</span>
+                        </div>
+                        <div class="chart-bar-item">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-vertical dimmed" style="height: 30%"><span>—</span></div>
+                            </div>
+                            <span class="chart-bar-label">W5</span>
+                        </div>
+                        <div class="chart-bar-item">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-vertical dimmed" style="height: 20%"><span>—</span></div>
+                            </div>
+                            <span class="chart-bar-label">W6</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Acquisition Section -->
+        <section class="section hidden" id="section-acquisition">
+            <div class="kpi-grid kpi-grid-3">
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">CPL (Meta Ads)</span>
+                        <span class="kpi-trend trend-down">↓ 8%</span>
+                    </div>
+                    <div class="kpi-value">RM 32</div>
+                    <div class="kpi-sub">Target: RM 20–50</div>
+                    <div class="kpi-bar"><div class="kpi-bar-fill bar-green" style="width: 65%"></div></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">CPL (WhatsApp Outreach)</span>
+                    </div>
+                    <div class="kpi-value">RM 11</div>
+                    <div class="kpi-sub">Target: RM 5–15</div>
+                    <div class="kpi-bar"><div class="kpi-bar-fill bar-green" style="width: 55%"></div></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">CPL (Landing Page)</span>
+                    </div>
+                    <div class="kpi-value">RM 48</div>
+                    <div class="kpi-sub">Target: RM 30–60</div>
+                    <div class="kpi-bar"><div class="kpi-bar-fill bar-yellow" style="width: 80%"></div></div>
+                </div>
+            </div>
+
+            <!-- Channel Breakdown -->
+            <div class="card">
+                <div class="card-header"><h3>Channel Performance</h3></div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Channel</th>
+                            <th>Spend</th>
+                            <th>Leads</th>
+                            <th>CPL</th>
+                            <th>Signups</th>
+                            <th>CAC</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Meta Ads</strong></td>
+                            <td>RM 2,560</td>
+                            <td>80</td>
+                            <td>RM 32</td>
+                            <td>38</td>
+                            <td>RM 168</td>
+                            <td><span class="status-badge status-green">Scaling</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>WhatsApp Outreach</strong></td>
+                            <td>RM 330</td>
+                            <td>30</td>
+                            <td>RM 11</td>
+                            <td>18</td>
+                            <td>RM 92</td>
+                            <td><span class="status-badge status-green">Performing</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Landing Page (Organic)</strong></td>
+                            <td>RM 480</td>
+                            <td>17</td>
+                            <td>RM 48</td>
+                            <td>12</td>
+                            <td>RM 240</td>
+                            <td><span class="status-badge status-yellow">Optimizing</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Ad Creative Performance -->
+            <div class="card">
+                <div class="card-header"><h3>Ad Creative Performance</h3></div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Creative</th>
+                            <th>Angle</th>
+                            <th>Impressions</th>
+                            <th>CTR</th>
+                            <th>Leads</th>
+                            <th>CPL</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1A — Deadline Urgency</strong></td>
+                            <td>Compliance</td>
+                            <td>18,400</td>
+                            <td>2.8%</td>
+                            <td>28</td>
+                            <td>RM 26</td>
+                            <td><span class="status-badge status-green">Winner 🏆</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>2A — Missed Orders</strong></td>
+                            <td>Revenue</td>
+                            <td>15,200</td>
+                            <td>2.1%</td>
+                            <td>22</td>
+                            <td>RM 31</td>
+                            <td><span class="status-badge status-green">Strong</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>3A — No Tech Skills</strong></td>
+                            <td>Simplicity</td>
+                            <td>12,800</td>
+                            <td>1.9%</td>
+                            <td>18</td>
+                            <td>RM 37</td>
+                            <td><span class="status-badge status-yellow">Testing</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>1B — Penalty Fear</strong></td>
+                            <td>Compliance</td>
+                            <td>10,600</td>
+                            <td>1.4%</td>
+                            <td>12</td>
+                            <td>RM 52</td>
+                            <td><span class="status-badge status-red">Below Target</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Activation Section -->
+        <section class="section hidden" id="section-activation">
+            <div class="kpi-grid kpi-grid-3">
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">Onboarding Completion</span>
+                    </div>
+                    <div class="kpi-value">72%</div>
+                    <div class="kpi-sub">Target: > 70%</div>
+                    <div class="kpi-bar"><div class="kpi-bar-fill bar-green" style="width: 72%"></div></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">WhatsApp Connected</span>
+                    </div>
+                    <div class="kpi-value">58%</div>
+                    <div class="kpi-sub">Target: > 50%</div>
+                    <div class="kpi-bar"><div class="kpi-bar-fill bar-green" style="width: 58%"></div></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">First Invoice in 24h</span>
+                    </div>
+                    <div class="kpi-value">67%</div>
+                    <div class="kpi-sub">Target: > 70%</div>
+                    <div class="kpi-bar"><div class="kpi-bar-fill bar-yellow" style="width: 67%"></div></div>
+                </div>
+            </div>
+
+            <!-- Onboarding Step Drop-off -->
+            <div class="card">
+                <div class="card-header"><h3>Onboarding Step Completion</h3></div>
+                <div class="step-funnel">
+                    <div class="step-row">
+                        <span class="step-name">1. Business Snapshot</span>
+                        <div class="step-bar-container">
+                            <div class="step-bar" style="width: 100%">100%</div>
+                        </div>
+                        <span class="step-count">68 users</span>
+                    </div>
+                    <div class="step-row">
+                        <span class="step-name">2. Auto Templates</span>
+                        <div class="step-bar-container">
+                            <div class="step-bar" style="width: 97%">97%</div>
+                        </div>
+                        <span class="step-count">66</span>
+                    </div>
+                    <div class="step-row">
+                        <span class="step-name">3. Menu Setup</span>
+                        <div class="step-bar-container">
+                            <div class="step-bar bar-yellow" style="width: 84%">84%</div>
+                        </div>
+                        <span class="step-count">57</span>
+                    </div>
+                    <div class="step-row">
+                        <span class="step-name">4. WhatsApp Connect</span>
+                        <div class="step-bar-container">
+                            <div class="step-bar bar-yellow" style="width: 74%">74%</div>
+                        </div>
+                        <span class="step-count">50</span>
+                    </div>
+                    <div class="step-row">
+                        <span class="step-name">5. Invoice Confirm</span>
+                        <div class="step-bar-container">
+                            <div class="step-bar bar-green" style="width: 72%">72%</div>
+                        </div>
+                        <span class="step-count">49</span>
+                    </div>
+                    <div class="step-row">
+                        <span class="step-name">6. First Order</span>
+                        <div class="step-bar-container">
+                            <div class="step-bar bar-green" style="width: 72%">72%</div>
+                        </div>
+                        <span class="step-count">49</span>
+                    </div>
+                </div>
+                <div class="card-insight">
+                    ⚠️ <strong>Biggest drop-off:</strong> Step 3 (Menu Setup) and Step 4 (WhatsApp Connect) — recommend adding "Quick Add" shortcut and live support trigger at these steps.
+                </div>
+            </div>
+        </section>
+
+        <!-- Retention Section -->
+        <section class="section hidden" id="section-retention">
+            <div class="kpi-grid kpi-grid-3">
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">D7 Retention</span>
+                    </div>
+                    <div class="kpi-value">78%</div>
+                    <div class="kpi-bar"><div class="kpi-bar-fill bar-yellow" style="width: 78%"></div></div>
+                    <div class="kpi-target">Target: > 80%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">D30 Retention</span>
+                    </div>
+                    <div class="kpi-value">—</div>
+                    <div class="kpi-sub">Not enough data yet</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-label">Weekly Active Rate</span>
+                    </div>
+                    <div class="kpi-value">71%</div>
+                    <div class="kpi-bar"><div class="kpi-bar-fill bar-green" style="width: 71%"></div></div>
+                    <div class="kpi-target">Target: > 70%</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h3>User Activity Cohort</h3></div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Cohort</th>
+                            <th>Users</th>
+                            <th>D1</th>
+                            <th>D3</th>
+                            <th>D7</th>
+                            <th>D14</th>
+                            <th>D30</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Week 1</strong></td>
+                            <td>12</td>
+                            <td class="cell-green">92%</td>
+                            <td class="cell-green">83%</td>
+                            <td class="cell-yellow">75%</td>
+                            <td class="cell-yellow">67%</td>
+                            <td class="cell-muted">—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Week 2</strong></td>
+                            <td>22</td>
+                            <td class="cell-green">95%</td>
+                            <td class="cell-green">86%</td>
+                            <td class="cell-yellow">78%</td>
+                            <td class="cell-muted">—</td>
+                            <td class="cell-muted">—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Week 3</strong></td>
+                            <td>34</td>
+                            <td class="cell-green">97%</td>
+                            <td class="cell-green">88%</td>
+                            <td class="cell-muted">—</td>
+                            <td class="cell-muted">—</td>
+                            <td class="cell-muted">—</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="card-insight">
+                    📈 <strong>Week-over-week improvement:</strong> D3 retention improving each cohort (83% → 86% → 88%). Onboarding changes are working.
+                </div>
+            </div>
+        </section>
+
+        <!-- Readiness Scorecard Section -->
+        <section class="section hidden" id="section-scorecard">
+            <div class="card">
+                <div class="card-header">
+                    <h3>GTM Readiness Scorecard</h3>
+                    <span class="card-badge">Week 3</span>
+                </div>
+                <div class="scorecard">
+                    <div class="scorecard-layer">
+                        <div class="layer-header">
+                            <span class="layer-icon">🎯</span>
+                            <span class="layer-name">1. Market</span>
+                            <span class="layer-score score-green">4/5 GREEN</span>
+                        </div>
+                        <div class="layer-items">
+                            <div class="layer-item"><span class="dot dot-green"></span> ICP defined (F&B, <3 outlets)</div>
+                            <div class="layer-item"><span class="dot dot-green"></span> Top 3 pains validated</div>
+                            <div class="layer-item"><span class="dot dot-green"></span> 10+ urgent users confirmed</div>
+                            <div class="layer-item"><span class="dot dot-green"></span> E-invoicing + WhatsApp as dominant case</div>
+                            <div class="layer-item"><span class="dot dot-yellow"></span> Competitive wedge needs sharpening</div>
+                        </div>
+                    </div>
+
+                    <div class="scorecard-layer">
+                        <div class="layer-header">
+                            <span class="layer-icon">📣</span>
+                            <span class="layer-name">2. Acquisition</span>
+                            <span class="layer-score score-green">5/6 GREEN</span>
+                        </div>
+                        <div class="layer-items">
+                            <div class="layer-item"><span class="dot dot-green"></span> Meta Ads channel working (CPL RM32)</div>
+                            <div class="layer-item"><span class="dot dot-green"></span> WhatsApp outreach performing (CPL RM11)</div>
+                            <div class="layer-item"><span class="dot dot-green"></span> 127 leads this week</div>
+                            <div class="layer-item"><span class="dot dot-green"></span> Compliance messaging resonating (2.8% CTR)</div>
+                            <div class="layer-item"><span class="dot dot-green"></span> CAC RM187 (within target)</div>
+                            <div class="layer-item"><span class="dot dot-yellow"></span> Landing page conversion needs optimization</div>
+                        </div>
+                    </div>
+
+                    <div class="scorecard-layer">
+                        <div class="layer-header">
+                            <span class="layer-icon">🚀</span>
+                            <span class="layer-name">3. Activation</span>
+                            <span class="layer-score score-yellow">4/6 GREEN</span>
+                        </div>
+                        <div class="layer-items">
+                            <div class="layer-item"><span class="dot dot-green"></span> Onboarding completion 72% (> 70%)</div>
+                            <div class="layer-item"><span class="dot dot-green"></span> Activation rate 64% (> 60%)</div>
+                            <div class="layer-item"><span class="dot dot-green"></span> Time to value 42 min (< 60)</div>
+                            <div class="layer-item"><span class="dot dot-green"></span> WhatsApp connection 58% (> 50%)</div>
+                            <div class="layer-item"><span class="dot dot-yellow"></span> First invoice 67% (target 70%)</div>
+                            <div class="layer-item"><span class="dot dot-yellow"></span> Step 3–4 drop-off needs fixing</div>
+                        </div>
+                    </div>
+
+                    <div class="scorecard-layer">
+                        <div class="layer-header">
+                            <span class="layer-icon">🔄</span>
+                            <span class="layer-name">4. Retention</span>
+                            <span class="layer-score score-yellow">2/6 GREEN</span>
+                        </div>
+                        <div class="layer-items">
+                            <div class="layer-item"><span class="dot dot-yellow"></span> D7 retention 78% (target 80%)</div>
+                            <div class="layer-item"><span class="dot dot-muted"></span> D30 retention — insufficient data</div>
+                            <div class="layer-item"><span class="dot dot-green"></span> Repeat actions increasing weekly</div>
+                            <div class="layer-item"><span class="dot dot-green"></span> Users report "saves time"</div>
+                            <div class="layer-item"><span class="dot dot-muted"></span> Churn reasons — not enough data</div>
+                            <div class="layer-item"><span class="dot dot-muted"></span> NPS — not yet surveyed</div>
+                        </div>
+                    </div>
+
+                    <div class="scorecard-layer">
+                        <div class="layer-header">
+                            <span class="layer-icon">📈</span>
+                            <span class="layer-name">5. Expansion</span>
+                            <span class="layer-score score-red">0/6 GREEN</span>
+                        </div>
+                        <div class="layer-items">
+                            <div class="layer-item"><span class="dot dot-muted"></span> Upgrade rate — too early</div>
+                            <div class="layer-item"><span class="dot dot-muted"></span> Revenue per user growth — too early</div>
+                            <div class="layer-item"><span class="dot dot-muted"></span> Referral rate — too early</div>
+                            <div class="layer-item"><span class="dot dot-muted"></span> LTV:CAC — insufficient data</div>
+                            <div class="layer-item"><span class="dot dot-muted"></span> Payback period — insufficient data</div>
+                            <div class="layer-item"><span class="dot dot-muted"></span> Expansion triggers — not defined</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overall Score -->
+                <div class="scorecard-summary">
+                    <div class="summary-score">
+                        <span class="summary-number">15</span>
+                        <span class="summary-total">/29</span>
+                    </div>
+                    <div class="summary-status">
+                        <span class="summary-label score-yellow">YELLOW — Scaling with Risks</span>
+                        <p>Market & Acquisition layers strong. Activation improving. Retention & Expansion need more time/data.</p>
+                    </div>
+                    <div class="summary-action">
+                        <strong>Priority:</strong> Fix Step 3–4 onboarding drop-off, push D7 retention above 80%, begin retention surveying.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

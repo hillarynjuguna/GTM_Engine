@@ -1,0 +1,16 @@
+{
+  "executedAt": "2026-03-27T04:01:01.906Z",
+  "success": true,
+  "results": {
+    "onboardingCompletedWithoutErrors": true,
+    "firstInvoiceSent": true,
+    "activationTriggered": true,
+    "activationRate": 100,
+    "timeToActivationMinutes": 0
+  },
+  "knownLimitations": [
+    "Reality integrations require sandbox credentials and a public webhook URL.",
+    "The validation script keeps LHDN and WhatsApp calls disabled so regression checks can run offline.",
+    "SQLite is intentionally minimal and not yet multi-tenant hardened."
+  ]
+}

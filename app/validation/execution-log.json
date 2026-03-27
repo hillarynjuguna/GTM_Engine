@@ -1,0 +1,2155 @@
+[
+  {
+    "step": "business_profile",
+    "status": 201,
+    "timestamp": "2026-03-27T04:01:01.796Z",
+    "body": {
+      "activationDefinition": {
+        "code": "activation_qualified",
+        "description": "A business activates when it sends its first successful invoice or executes its first successful workflow.",
+        "qualifiesOn": [
+          "invoice_sent",
+          "workflow_executed"
+        ],
+        "successWindowHours": 24
+      },
+      "steps": [
+        {
+          "id": "business_profile",
+          "label": "Business profile",
+          "description": "Capture enough business context to pre-configure the workspace.",
+          "terminalState": "BUSINESS_PROFILE_COMPLETED"
+        },
+        {
+          "id": "template_generation",
+          "label": "Template generation",
+          "description": "Generate invoice and WhatsApp defaults automatically.",
+          "terminalState": "TEMPLATES_READY"
+        },
+        {
+          "id": "data_import",
+          "label": "Menu import",
+          "description": "Import or manually add sellable items for invoicing.",
+          "terminalState": "MENU_READY"
+        },
+        {
+          "id": "whatsapp_connection",
+          "label": "WhatsApp connection",
+          "description": "Connect or deliberately skip the messaging channel.",
+          "terminalState": "WHATSAPP_CONNECTED"
+        },
+        {
+          "id": "first_invoice",
+          "label": "First invoice",
+          "description": "Create and send the first invoice to trigger activation.",
+          "terminalState": "FIRST_INVOICE_SENT"
+        }
+      ],
+      "menuFields": [
+        "name",
+        "price",
+        "category"
+      ],
+      "businessTypes": [
+        "Restoran / Kafe",
+        "Bakeri / Kek",
+        "Catering",
+        "Food Stall / Gerai",
+        "Lain-lain"
+      ],
+      "orderChannels": [
+        "WhatsApp",
+        "Walk-in",
+        "Grab/Foodpanda",
+        "Phone call"
+      ],
+      "businesses": [
+        {
+          "id": "biz_3nvlfi7p",
+          "businessName": "Warung Pagi Bahagia",
+          "ownerName": "Nurul",
+          "createdAt": "2026-03-27T04:01:01.770Z",
+          "activationAt": null,
+          "onboardingState": "BUSINESS_PROFILE_COMPLETED",
+          "isActive": true,
+          "credentials": {
+            "hasLhdnCredentials": false,
+            "hasWhatsAppCredentials": false,
+            "createdAt": null,
+            "lhdnClientIdMasked": "",
+            "whatsappPhoneNumberIdMasked": ""
+          }
+        }
+      ],
+      "activeBusiness": {
+        "id": "biz_3nvlfi7p",
+        "createdAt": "2026-03-27T04:01:01.770Z",
+        "updatedAt": "2026-03-27T04:01:01.772Z",
+        "activationAt": null,
+        "onboardingState": "BUSINESS_PROFILE_COMPLETED",
+        "completedSteps": [
+          "business_profile"
+        ],
+        "profile": {
+          "businessName": "Warung Pagi Bahagia",
+          "businessType": "Restoran / Kafe",
+          "ownerName": "Nurul",
+          "phone": "60199887766",
+          "email": "nurul@example.com",
+          "orderChannels": [
+            "WhatsApp",
+            "Walk-in"
+          ],
+          "leadSource": "Meta Ads",
+          "registrationNumber": "",
+          "tinNumber": "",
+          "sstNumber": "",
+          "addressLine1": "",
+          "addressLine2": "",
+          "addressLine3": "",
+          "city": "",
+          "postcode": "",
+          "stateCode": "",
+          "countryCode": "MYS",
+          "msicCode": ""
+        },
+        "templates": {
+          "invoice": null,
+          "whatsapp": []
+        },
+        "menuItems": [],
+        "whatsapp": {
+          "status": "pending",
+          "phoneNumber": "60199887766",
+          "connectedAt": null,
+          "testRecipient": "60199887766"
+        },
+        "invoices": [],
+        "workflows": [],
+        "events": [
+          {
+            "id": "evt_l9qccw3c",
+            "event": "signup_completed",
+            "timestamp": "2026-03-27T04:01:01.771Z",
+            "properties": {
+              "source": "Meta Ads"
+            }
+          },
+          {
+            "id": "evt_8jdd15qr",
+            "event": "onboarding_started",
+            "timestamp": "2026-03-27T04:01:01.771Z",
+            "properties": {}
+          },
+          {
+            "id": "evt_hg3sad0q",
+            "event": "onboarding_step_completed",
+            "timestamp": "2026-03-27T04:01:01.772Z",
+            "properties": {
+              "step_name": "business_profile"
+            }
+          }
+        ],
+        "credentials": {
+          "hasLhdnCredentials": false,
+          "hasWhatsAppCredentials": false,
+          "createdAt": null,
+          "lhdnClientIdMasked": "",
+          "whatsappPhoneNumberIdMasked": ""
+        },
+        "suggestedMenuItems": [
+          {
+            "id": "seed-nasi-lemak",
+            "name": "Nasi Lemak",
+            "price": 8,
+            "category": "Main / Hidangan Utama"
+          },
+          {
+            "id": "seed-teh-tarik",
+            "name": "Teh Tarik",
+            "price": 3,
+            "category": "Drinks / Minuman"
+          },
+          {
+            "id": "seed-kuih",
+            "name": "Kuih Seri Muka",
+            "price": 4.5,
+            "category": "Dessert / Pencuci Mulut"
+          }
+        ],
+        "stepStatuses": [
+          {
+            "id": "business_profile",
+            "label": "Business profile",
+            "description": "Capture enough business context to pre-configure the workspace.",
+            "terminalState": "BUSINESS_PROFILE_COMPLETED",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "template_generation",
+            "label": "Template generation",
+            "description": "Generate invoice and WhatsApp defaults automatically.",
+            "terminalState": "TEMPLATES_READY",
+            "completed": false,
+            "current": true
+          },
+          {
+            "id": "data_import",
+            "label": "Menu import",
+            "description": "Import or manually add sellable items for invoicing.",
+            "terminalState": "MENU_READY",
+            "completed": false,
+            "current": false
+          },
+          {
+            "id": "whatsapp_connection",
+            "label": "WhatsApp connection",
+            "description": "Connect or deliberately skip the messaging channel.",
+            "terminalState": "WHATSAPP_CONNECTED",
+            "completed": false,
+            "current": false
+          },
+          {
+            "id": "first_invoice",
+            "label": "First invoice",
+            "description": "Create and send the first invoice to trigger activation.",
+            "terminalState": "FIRST_INVOICE_SENT",
+            "completed": false,
+            "current": false
+          }
+        ]
+      },
+      "dashboard": {
+        "activationDefinition": {
+          "code": "activation_qualified",
+          "description": "A business activates when it sends its first successful invoice or executes its first successful workflow.",
+          "qualifiesOn": [
+            "invoice_sent",
+            "workflow_executed"
+          ],
+          "successWindowHours": 24
+        },
+        "headline": {
+          "signups": 1,
+          "activated": 0,
+          "activationRate": 0,
+          "onboardingCompletionRate": 0,
+          "timeToActivationMinutes": null,
+          "invoicesIssued": 0,
+          "revenue": 0,
+          "cac": 180
+        },
+        "completionRates": [
+          {
+            "stepId": "business_profile",
+            "label": "Business profile",
+            "completionRate": 100
+          },
+          {
+            "stepId": "template_generation",
+            "label": "Template generation",
+            "completionRate": 0
+          },
+          {
+            "stepId": "data_import",
+            "label": "Menu import",
+            "completionRate": 0
+          },
+          {
+            "stepId": "whatsapp_connection",
+            "label": "WhatsApp connection",
+            "completionRate": 0
+          },
+          {
+            "stepId": "first_invoice",
+            "label": "First invoice",
+            "completionRate": 0
+          }
+        ],
+        "dropOffPoints": {
+          "BUSINESS_PROFILE_COMPLETED": 1
+        },
+        "acquisitionHooks": [
+          {
+            "id": "seed-meta",
+            "channel": "Meta Ads",
+            "spend": 900,
+            "leads": 22,
+            "customers": 5,
+            "createdAt": "2026-03-24T09:00:00.000Z"
+          }
+        ],
+        "recentLogs": [
+          {
+            "id": "log_ga9qep1x",
+            "timestamp": "2026-03-27T04:01:01.772Z",
+            "action": "business_profile_saved",
+            "details": {
+              "businessId": "biz_3nvlfi7p",
+              "businessName": "Warung Pagi Bahagia"
+            }
+          }
+        ],
+        "appliedOptimizations": [],
+        "interventions": []
+      }
+    }
+  },
+  {
+    "step": "template_generation",
+    "status": 200,
+    "timestamp": "2026-03-27T04:01:01.813Z",
+    "body": {
+      "activationDefinition": {
+        "code": "activation_qualified",
+        "description": "A business activates when it sends its first successful invoice or executes its first successful workflow.",
+        "qualifiesOn": [
+          "invoice_sent",
+          "workflow_executed"
+        ],
+        "successWindowHours": 24
+      },
+      "steps": [
+        {
+          "id": "business_profile",
+          "label": "Business profile",
+          "description": "Capture enough business context to pre-configure the workspace.",
+          "terminalState": "BUSINESS_PROFILE_COMPLETED"
+        },
+        {
+          "id": "template_generation",
+          "label": "Template generation",
+          "description": "Generate invoice and WhatsApp defaults automatically.",
+          "terminalState": "TEMPLATES_READY"
+        },
+        {
+          "id": "data_import",
+          "label": "Menu import",
+          "description": "Import or manually add sellable items for invoicing.",
+          "terminalState": "MENU_READY"
+        },
+        {
+          "id": "whatsapp_connection",
+          "label": "WhatsApp connection",
+          "description": "Connect or deliberately skip the messaging channel.",
+          "terminalState": "WHATSAPP_CONNECTED"
+        },
+        {
+          "id": "first_invoice",
+          "label": "First invoice",
+          "description": "Create and send the first invoice to trigger activation.",
+          "terminalState": "FIRST_INVOICE_SENT"
+        }
+      ],
+      "menuFields": [
+        "name",
+        "price",
+        "category"
+      ],
+      "businessTypes": [
+        "Restoran / Kafe",
+        "Bakeri / Kek",
+        "Catering",
+        "Food Stall / Gerai",
+        "Lain-lain"
+      ],
+      "orderChannels": [
+        "WhatsApp",
+        "Walk-in",
+        "Grab/Foodpanda",
+        "Phone call"
+      ],
+      "businesses": [
+        {
+          "id": "biz_3nvlfi7p",
+          "businessName": "Warung Pagi Bahagia",
+          "ownerName": "Nurul",
+          "createdAt": "2026-03-27T04:01:01.770Z",
+          "activationAt": null,
+          "onboardingState": "TEMPLATES_READY",
+          "isActive": true,
+          "credentials": {
+            "hasLhdnCredentials": false,
+            "hasWhatsAppCredentials": false,
+            "createdAt": null,
+            "lhdnClientIdMasked": "",
+            "whatsappPhoneNumberIdMasked": ""
+          }
+        }
+      ],
+      "activeBusiness": {
+        "id": "biz_3nvlfi7p",
+        "createdAt": "2026-03-27T04:01:01.770Z",
+        "updatedAt": "2026-03-27T04:01:01.806Z",
+        "activationAt": null,
+        "onboardingState": "TEMPLATES_READY",
+        "completedSteps": [
+          "business_profile",
+          "template_generation"
+        ],
+        "profile": {
+          "businessName": "Warung Pagi Bahagia",
+          "businessType": "Restoran / Kafe",
+          "ownerName": "Nurul",
+          "phone": "60199887766",
+          "email": "nurul@example.com",
+          "orderChannels": [
+            "WhatsApp",
+            "Walk-in"
+          ],
+          "leadSource": "Meta Ads",
+          "registrationNumber": "",
+          "tinNumber": "",
+          "sstNumber": "",
+          "addressLine1": "",
+          "addressLine2": "",
+          "addressLine3": "",
+          "city": "",
+          "postcode": "",
+          "stateCode": "",
+          "countryCode": "MYS",
+          "msicCode": ""
+        },
+        "templates": {
+          "invoice": {
+            "invoice": {
+              "header": {
+                "invoice_number": "INV-{auto_increment}",
+                "date_issued": "{ISO_8601_datetime}",
+                "due_date": "{ISO_8601_datetime}",
+                "currency": "MYR",
+                "status": "draft",
+                "lhdn_compliance": {
+                  "version": "1.0",
+                  "tin_number": "PENDING_TIN",
+                  "brn_number": "PENDING_BRN",
+                  "msic_code": "56101",
+                  "sst_registration": null,
+                  "e_invoice_uuid": "{uuid_v4}"
+                }
+              },
+              "seller": {
+                "name": "Warung Pagi Bahagia",
+                "phone": "60199887766",
+                "email": "nurul@example.com"
+              },
+              "buyer": {
+                "name": "Walk-in Customer",
+                "phone": null
+              },
+              "items": [],
+              "totals": {
+                "subtotal": 0,
+                "tax_total": 0,
+                "discount": 0,
+                "grand_total": 0
+              }
+            }
+          },
+          "whatsapp": [
+            {
+              "id": "menu-request",
+              "name": "Menu request",
+              "trigger": "contains_any(menu, apa ada, harga)",
+              "response": "Ini menu kami. Balas dengan nama item dan kuantiti, contohnya 'Nasi Lemak 2, Teh Tarik 1'."
+            },
+            {
+              "id": "order-confirmation",
+              "name": "Order confirmation",
+              "trigger": "order_detected",
+              "response": "Terima kasih. Kami sedang siapkan order anda dan invois akan dihantar sebentar lagi."
+            },
+            {
+              "id": "hours",
+              "name": "Business hours",
+              "trigger": "contains_any(open, buka, hours)",
+              "response": "Kami buka setiap hari 9 pagi hingga 9 malam. Nak tengok menu? Balas MENU."
+            }
+          ]
+        },
+        "menuItems": [],
+        "whatsapp": {
+          "status": "pending",
+          "phoneNumber": "60199887766",
+          "connectedAt": null,
+          "testRecipient": "60199887766"
+        },
+        "workflows": [],
+        "invoices": [],
+        "events": [
+          {
+            "id": "evt_l9qccw3c",
+            "event": "signup_completed",
+            "timestamp": "2026-03-27T04:01:01.771Z",
+            "properties": {
+              "source": "Meta Ads"
+            }
+          },
+          {
+            "id": "evt_8jdd15qr",
+            "event": "onboarding_started",
+            "timestamp": "2026-03-27T04:01:01.771Z",
+            "properties": {}
+          },
+          {
+            "id": "evt_hg3sad0q",
+            "event": "onboarding_step_completed",
+            "timestamp": "2026-03-27T04:01:01.772Z",
+            "properties": {
+              "step_name": "business_profile"
+            }
+          },
+          {
+            "id": "evt_jihgy2xb",
+            "event": "onboarding_step_completed",
+            "timestamp": "2026-03-27T04:01:01.806Z",
+            "properties": {
+              "step_name": "template_generation"
+            }
+          }
+        ],
+        "credentials": {
+          "hasLhdnCredentials": false,
+          "hasWhatsAppCredentials": false,
+          "createdAt": null,
+          "lhdnClientIdMasked": "",
+          "whatsappPhoneNumberIdMasked": ""
+        },
+        "suggestedMenuItems": [
+          {
+            "id": "seed-nasi-lemak",
+            "name": "Nasi Lemak",
+            "price": 8,
+            "category": "Main / Hidangan Utama"
+          },
+          {
+            "id": "seed-teh-tarik",
+            "name": "Teh Tarik",
+            "price": 3,
+            "category": "Drinks / Minuman"
+          },
+          {
+            "id": "seed-kuih",
+            "name": "Kuih Seri Muka",
+            "price": 4.5,
+            "category": "Dessert / Pencuci Mulut"
+          }
+        ],
+        "stepStatuses": [
+          {
+            "id": "business_profile",
+            "label": "Business profile",
+            "description": "Capture enough business context to pre-configure the workspace.",
+            "terminalState": "BUSINESS_PROFILE_COMPLETED",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "template_generation",
+            "label": "Template generation",
+            "description": "Generate invoice and WhatsApp defaults automatically.",
+            "terminalState": "TEMPLATES_READY",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "data_import",
+            "label": "Menu import",
+            "description": "Import or manually add sellable items for invoicing.",
+            "terminalState": "MENU_READY",
+            "completed": false,
+            "current": true
+          },
+          {
+            "id": "whatsapp_connection",
+            "label": "WhatsApp connection",
+            "description": "Connect or deliberately skip the messaging channel.",
+            "terminalState": "WHATSAPP_CONNECTED",
+            "completed": false,
+            "current": false
+          },
+          {
+            "id": "first_invoice",
+            "label": "First invoice",
+            "description": "Create and send the first invoice to trigger activation.",
+            "terminalState": "FIRST_INVOICE_SENT",
+            "completed": false,
+            "current": false
+          }
+        ]
+      },
+      "dashboard": {
+        "activationDefinition": {
+          "code": "activation_qualified",
+          "description": "A business activates when it sends its first successful invoice or executes its first successful workflow.",
+          "qualifiesOn": [
+            "invoice_sent",
+            "workflow_executed"
+          ],
+          "successWindowHours": 24
+        },
+        "headline": {
+          "signups": 1,
+          "activated": 0,
+          "activationRate": 0,
+          "onboardingCompletionRate": 0,
+          "timeToActivationMinutes": null,
+          "invoicesIssued": 0,
+          "revenue": 0,
+          "cac": 180
+        },
+        "completionRates": [
+          {
+            "stepId": "business_profile",
+            "label": "Business profile",
+            "completionRate": 100
+          },
+          {
+            "stepId": "template_generation",
+            "label": "Template generation",
+            "completionRate": 100
+          },
+          {
+            "stepId": "data_import",
+            "label": "Menu import",
+            "completionRate": 0
+          },
+          {
+            "stepId": "whatsapp_connection",
+            "label": "WhatsApp connection",
+            "completionRate": 0
+          },
+          {
+            "stepId": "first_invoice",
+            "label": "First invoice",
+            "completionRate": 0
+          }
+        ],
+        "dropOffPoints": {
+          "TEMPLATES_READY": 1
+        },
+        "acquisitionHooks": [
+          {
+            "id": "seed-meta",
+            "channel": "Meta Ads",
+            "spend": 900,
+            "leads": 22,
+            "customers": 5,
+            "createdAt": "2026-03-24T09:00:00.000Z"
+          }
+        ],
+        "recentLogs": [
+          {
+            "id": "log_qrvol4bt",
+            "timestamp": "2026-03-27T04:01:01.806Z",
+            "action": "templates_generated",
+            "details": {
+              "businessId": "biz_3nvlfi7p"
+            }
+          },
+          {
+            "id": "log_ga9qep1x",
+            "action": "business_profile_saved",
+            "timestamp": "2026-03-27T04:01:01.772Z",
+            "details": {
+              "businessId": "biz_3nvlfi7p",
+              "businessName": "Warung Pagi Bahagia"
+            }
+          }
+        ],
+        "appliedOptimizations": [],
+        "interventions": []
+      }
+    }
+  },
+  {
+    "step": "csv_preview",
+    "status": 200,
+    "timestamp": "2026-03-27T04:01:01.830Z",
+    "body": {
+      "headers": [
+        "Item",
+        "Price",
+        "Category"
+      ],
+      "mapping": {
+        "name": "Item",
+        "price": "Price",
+        "category": "Category"
+      },
+      "items": [
+        {
+          "id": "item_p05rakhi",
+          "name": "Nasi Lemak",
+          "price": 8,
+          "category": "Main"
+        },
+        {
+          "id": "item_fv7o230g",
+          "name": "Teh Tarik",
+          "price": 3,
+          "category": "Drinks"
+        },
+        {
+          "id": "item_9bku0zpe",
+          "name": "Kuih",
+          "price": 4.5,
+          "category": "Dessert"
+        }
+      ],
+      "errors": [],
+      "totalRows": 3
+    }
+  },
+  {
+    "step": "import_confirm",
+    "status": 200,
+    "timestamp": "2026-03-27T04:01:01.849Z",
+    "body": {
+      "activationDefinition": {
+        "code": "activation_qualified",
+        "description": "A business activates when it sends its first successful invoice or executes its first successful workflow.",
+        "qualifiesOn": [
+          "invoice_sent",
+          "workflow_executed"
+        ],
+        "successWindowHours": 24
+      },
+      "steps": [
+        {
+          "id": "business_profile",
+          "label": "Business profile",
+          "description": "Capture enough business context to pre-configure the workspace.",
+          "terminalState": "BUSINESS_PROFILE_COMPLETED"
+        },
+        {
+          "id": "template_generation",
+          "label": "Template generation",
+          "description": "Generate invoice and WhatsApp defaults automatically.",
+          "terminalState": "TEMPLATES_READY"
+        },
+        {
+          "id": "data_import",
+          "label": "Menu import",
+          "description": "Import or manually add sellable items for invoicing.",
+          "terminalState": "MENU_READY"
+        },
+        {
+          "id": "whatsapp_connection",
+          "label": "WhatsApp connection",
+          "description": "Connect or deliberately skip the messaging channel.",
+          "terminalState": "WHATSAPP_CONNECTED"
+        },
+        {
+          "id": "first_invoice",
+          "label": "First invoice",
+          "description": "Create and send the first invoice to trigger activation.",
+          "terminalState": "FIRST_INVOICE_SENT"
+        }
+      ],
+      "menuFields": [
+        "name",
+        "price",
+        "category"
+      ],
+      "businessTypes": [
+        "Restoran / Kafe",
+        "Bakeri / Kek",
+        "Catering",
+        "Food Stall / Gerai",
+        "Lain-lain"
+      ],
+      "orderChannels": [
+        "WhatsApp",
+        "Walk-in",
+        "Grab/Foodpanda",
+        "Phone call"
+      ],
+      "businesses": [
+        {
+          "id": "biz_3nvlfi7p",
+          "businessName": "Warung Pagi Bahagia",
+          "ownerName": "Nurul",
+          "createdAt": "2026-03-27T04:01:01.770Z",
+          "activationAt": null,
+          "onboardingState": "MENU_READY",
+          "isActive": true,
+          "credentials": {
+            "hasLhdnCredentials": false,
+            "hasWhatsAppCredentials": false,
+            "createdAt": null,
+            "lhdnClientIdMasked": "",
+            "whatsappPhoneNumberIdMasked": ""
+          }
+        }
+      ],
+      "activeBusiness": {
+        "id": "biz_3nvlfi7p",
+        "createdAt": "2026-03-27T04:01:01.770Z",
+        "updatedAt": "2026-03-27T04:01:01.840Z",
+        "activationAt": null,
+        "onboardingState": "MENU_READY",
+        "completedSteps": [
+          "business_profile",
+          "template_generation",
+          "data_import"
+        ],
+        "profile": {
+          "businessName": "Warung Pagi Bahagia",
+          "businessType": "Restoran / Kafe",
+          "ownerName": "Nurul",
+          "phone": "60199887766",
+          "email": "nurul@example.com",
+          "orderChannels": [
+            "WhatsApp",
+            "Walk-in"
+          ],
+          "leadSource": "Meta Ads",
+          "registrationNumber": "",
+          "tinNumber": "",
+          "sstNumber": "",
+          "addressLine1": "",
+          "addressLine2": "",
+          "addressLine3": "",
+          "city": "",
+          "postcode": "",
+          "stateCode": "",
+          "countryCode": "MYS",
+          "msicCode": ""
+        },
+        "templates": {
+          "invoice": {
+            "invoice": {
+              "header": {
+                "invoice_number": "INV-{auto_increment}",
+                "date_issued": "{ISO_8601_datetime}",
+                "due_date": "{ISO_8601_datetime}",
+                "currency": "MYR",
+                "status": "draft",
+                "lhdn_compliance": {
+                  "version": "1.0",
+                  "tin_number": "PENDING_TIN",
+                  "brn_number": "PENDING_BRN",
+                  "msic_code": "56101",
+                  "sst_registration": null,
+                  "e_invoice_uuid": "{uuid_v4}"
+                }
+              },
+              "seller": {
+                "name": "Warung Pagi Bahagia",
+                "phone": "60199887766",
+                "email": "nurul@example.com"
+              },
+              "buyer": {
+                "name": "Walk-in Customer",
+                "phone": null
+              },
+              "items": [],
+              "totals": {
+                "subtotal": 0,
+                "tax_total": 0,
+                "discount": 0,
+                "grand_total": 0
+              }
+            }
+          },
+          "whatsapp": [
+            {
+              "id": "menu-request",
+              "name": "Menu request",
+              "trigger": "contains_any(menu, apa ada, harga)",
+              "response": "Ini menu kami. Balas dengan nama item dan kuantiti, contohnya 'Nasi Lemak 2, Teh Tarik 1'."
+            },
+            {
+              "id": "order-confirmation",
+              "name": "Order confirmation",
+              "trigger": "order_detected",
+              "response": "Terima kasih. Kami sedang siapkan order anda dan invois akan dihantar sebentar lagi."
+            },
+            {
+              "id": "hours",
+              "name": "Business hours",
+              "trigger": "contains_any(open, buka, hours)",
+              "response": "Kami buka setiap hari 9 pagi hingga 9 malam. Nak tengok menu? Balas MENU."
+            }
+          ]
+        },
+        "menuItems": [
+          {
+            "id": "item_p05rakhi",
+            "name": "Nasi Lemak",
+            "price": 8,
+            "category": "Main"
+          },
+          {
+            "id": "item_fv7o230g",
+            "name": "Teh Tarik",
+            "price": 3,
+            "category": "Drinks"
+          },
+          {
+            "id": "item_9bku0zpe",
+            "name": "Kuih",
+            "price": 4.5,
+            "category": "Dessert"
+          }
+        ],
+        "whatsapp": {
+          "status": "pending",
+          "phoneNumber": "60199887766",
+          "connectedAt": null,
+          "testRecipient": "60199887766"
+        },
+        "workflows": [],
+        "invoices": [],
+        "events": [
+          {
+            "id": "evt_l9qccw3c",
+            "event": "signup_completed",
+            "timestamp": "2026-03-27T04:01:01.771Z",
+            "properties": {
+              "source": "Meta Ads"
+            }
+          },
+          {
+            "id": "evt_8jdd15qr",
+            "event": "onboarding_started",
+            "timestamp": "2026-03-27T04:01:01.771Z",
+            "properties": {}
+          },
+          {
+            "id": "evt_hg3sad0q",
+            "event": "onboarding_step_completed",
+            "timestamp": "2026-03-27T04:01:01.772Z",
+            "properties": {
+              "step_name": "business_profile"
+            }
+          },
+          {
+            "id": "evt_jihgy2xb",
+            "event": "onboarding_step_completed",
+            "timestamp": "2026-03-27T04:01:01.806Z",
+            "properties": {
+              "step_name": "template_generation"
+            }
+          },
+          {
+            "id": "evt_y035fp70",
+            "event": "menu_items_added",
+            "timestamp": "2026-03-27T04:01:01.840Z",
+            "properties": {
+              "count": 3,
+              "method": "csv"
+            }
+          }
+        ],
+        "credentials": {
+          "hasLhdnCredentials": false,
+          "hasWhatsAppCredentials": false,
+          "createdAt": null,
+          "lhdnClientIdMasked": "",
+          "whatsappPhoneNumberIdMasked": ""
+        },
+        "suggestedMenuItems": [
+          {
+            "id": "item_p05rakhi",
+            "name": "Nasi Lemak",
+            "price": 8,
+            "category": "Main"
+          },
+          {
+            "id": "item_fv7o230g",
+            "name": "Teh Tarik",
+            "price": 3,
+            "category": "Drinks"
+          },
+          {
+            "id": "item_9bku0zpe",
+            "name": "Kuih",
+            "price": 4.5,
+            "category": "Dessert"
+          }
+        ],
+        "stepStatuses": [
+          {
+            "id": "business_profile",
+            "label": "Business profile",
+            "description": "Capture enough business context to pre-configure the workspace.",
+            "terminalState": "BUSINESS_PROFILE_COMPLETED",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "template_generation",
+            "label": "Template generation",
+            "description": "Generate invoice and WhatsApp defaults automatically.",
+            "terminalState": "TEMPLATES_READY",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "data_import",
+            "label": "Menu import",
+            "description": "Import or manually add sellable items for invoicing.",
+            "terminalState": "MENU_READY",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "whatsapp_connection",
+            "label": "WhatsApp connection",
+            "description": "Connect or deliberately skip the messaging channel.",
+            "terminalState": "WHATSAPP_CONNECTED",
+            "completed": false,
+            "current": true
+          },
+          {
+            "id": "first_invoice",
+            "label": "First invoice",
+            "description": "Create and send the first invoice to trigger activation.",
+            "terminalState": "FIRST_INVOICE_SENT",
+            "completed": false,
+            "current": false
+          }
+        ]
+      },
+      "dashboard": {
+        "activationDefinition": {
+          "code": "activation_qualified",
+          "description": "A business activates when it sends its first successful invoice or executes its first successful workflow.",
+          "qualifiesOn": [
+            "invoice_sent",
+            "workflow_executed"
+          ],
+          "successWindowHours": 24
+        },
+        "headline": {
+          "signups": 1,
+          "activated": 0,
+          "activationRate": 0,
+          "onboardingCompletionRate": 0,
+          "timeToActivationMinutes": null,
+          "invoicesIssued": 0,
+          "revenue": 0,
+          "cac": 180
+        },
+        "completionRates": [
+          {
+            "stepId": "business_profile",
+            "label": "Business profile",
+            "completionRate": 100
+          },
+          {
+            "stepId": "template_generation",
+            "label": "Template generation",
+            "completionRate": 100
+          },
+          {
+            "stepId": "data_import",
+            "label": "Menu import",
+            "completionRate": 100
+          },
+          {
+            "stepId": "whatsapp_connection",
+            "label": "WhatsApp connection",
+            "completionRate": 0
+          },
+          {
+            "stepId": "first_invoice",
+            "label": "First invoice",
+            "completionRate": 0
+          }
+        ],
+        "dropOffPoints": {
+          "MENU_READY": 1
+        },
+        "acquisitionHooks": [
+          {
+            "id": "seed-meta",
+            "channel": "Meta Ads",
+            "spend": 900,
+            "leads": 22,
+            "customers": 5,
+            "createdAt": "2026-03-24T09:00:00.000Z"
+          }
+        ],
+        "recentLogs": [
+          {
+            "id": "log_mbrx4xhc",
+            "timestamp": "2026-03-27T04:01:01.840Z",
+            "action": "menu_import_confirmed",
+            "details": {
+              "businessId": "biz_3nvlfi7p",
+              "itemCount": 3,
+              "source": "csv"
+            }
+          },
+          {
+            "id": "log_qrvol4bt",
+            "action": "templates_generated",
+            "timestamp": "2026-03-27T04:01:01.806Z",
+            "details": {
+              "businessId": "biz_3nvlfi7p"
+            }
+          },
+          {
+            "id": "log_ga9qep1x",
+            "action": "business_profile_saved",
+            "timestamp": "2026-03-27T04:01:01.772Z",
+            "details": {
+              "businessId": "biz_3nvlfi7p",
+              "businessName": "Warung Pagi Bahagia"
+            }
+          }
+        ],
+        "appliedOptimizations": [],
+        "interventions": []
+      }
+    }
+  },
+  {
+    "step": "whatsapp_connect",
+    "status": 200,
+    "timestamp": "2026-03-27T04:01:01.872Z",
+    "body": {
+      "activationDefinition": {
+        "code": "activation_qualified",
+        "description": "A business activates when it sends its first successful invoice or executes its first successful workflow.",
+        "qualifiesOn": [
+          "invoice_sent",
+          "workflow_executed"
+        ],
+        "successWindowHours": 24
+      },
+      "steps": [
+        {
+          "id": "business_profile",
+          "label": "Business profile",
+          "description": "Capture enough business context to pre-configure the workspace.",
+          "terminalState": "BUSINESS_PROFILE_COMPLETED"
+        },
+        {
+          "id": "template_generation",
+          "label": "Template generation",
+          "description": "Generate invoice and WhatsApp defaults automatically.",
+          "terminalState": "TEMPLATES_READY"
+        },
+        {
+          "id": "data_import",
+          "label": "Menu import",
+          "description": "Import or manually add sellable items for invoicing.",
+          "terminalState": "MENU_READY"
+        },
+        {
+          "id": "whatsapp_connection",
+          "label": "WhatsApp connection",
+          "description": "Connect or deliberately skip the messaging channel.",
+          "terminalState": "WHATSAPP_CONNECTED"
+        },
+        {
+          "id": "first_invoice",
+          "label": "First invoice",
+          "description": "Create and send the first invoice to trigger activation.",
+          "terminalState": "FIRST_INVOICE_SENT"
+        }
+      ],
+      "menuFields": [
+        "name",
+        "price",
+        "category"
+      ],
+      "businessTypes": [
+        "Restoran / Kafe",
+        "Bakeri / Kek",
+        "Catering",
+        "Food Stall / Gerai",
+        "Lain-lain"
+      ],
+      "orderChannels": [
+        "WhatsApp",
+        "Walk-in",
+        "Grab/Foodpanda",
+        "Phone call"
+      ],
+      "businesses": [
+        {
+          "id": "biz_3nvlfi7p",
+          "businessName": "Warung Pagi Bahagia",
+          "ownerName": "Nurul",
+          "createdAt": "2026-03-27T04:01:01.770Z",
+          "activationAt": null,
+          "onboardingState": "WHATSAPP_SKIPPED",
+          "isActive": true,
+          "credentials": {
+            "hasLhdnCredentials": false,
+            "hasWhatsAppCredentials": false,
+            "createdAt": null,
+            "lhdnClientIdMasked": "",
+            "whatsappPhoneNumberIdMasked": ""
+          }
+        }
+      ],
+      "activeBusiness": {
+        "id": "biz_3nvlfi7p",
+        "createdAt": "2026-03-27T04:01:01.770Z",
+        "updatedAt": "2026-03-27T04:01:01.861Z",
+        "activationAt": null,
+        "onboardingState": "WHATSAPP_SKIPPED",
+        "completedSteps": [
+          "business_profile",
+          "template_generation",
+          "data_import",
+          "whatsapp_connection"
+        ],
+        "profile": {
+          "businessName": "Warung Pagi Bahagia",
+          "businessType": "Restoran / Kafe",
+          "ownerName": "Nurul",
+          "phone": "60199887766",
+          "email": "nurul@example.com",
+          "orderChannels": [
+            "WhatsApp",
+            "Walk-in"
+          ],
+          "leadSource": "Meta Ads",
+          "registrationNumber": "",
+          "tinNumber": "",
+          "sstNumber": "",
+          "addressLine1": "",
+          "addressLine2": "",
+          "addressLine3": "",
+          "city": "",
+          "postcode": "",
+          "stateCode": "",
+          "countryCode": "MYS",
+          "msicCode": ""
+        },
+        "templates": {
+          "invoice": {
+            "invoice": {
+              "header": {
+                "invoice_number": "INV-{auto_increment}",
+                "date_issued": "{ISO_8601_datetime}",
+                "due_date": "{ISO_8601_datetime}",
+                "currency": "MYR",
+                "status": "draft",
+                "lhdn_compliance": {
+                  "version": "1.0",
+                  "tin_number": "PENDING_TIN",
+                  "brn_number": "PENDING_BRN",
+                  "msic_code": "56101",
+                  "sst_registration": null,
+                  "e_invoice_uuid": "{uuid_v4}"
+                }
+              },
+              "seller": {
+                "name": "Warung Pagi Bahagia",
+                "phone": "60199887766",
+                "email": "nurul@example.com"
+              },
+              "buyer": {
+                "name": "Walk-in Customer",
+                "phone": null
+              },
+              "items": [],
+              "totals": {
+                "subtotal": 0,
+                "tax_total": 0,
+                "discount": 0,
+                "grand_total": 0
+              }
+            }
+          },
+          "whatsapp": [
+            {
+              "id": "menu-request",
+              "name": "Menu request",
+              "trigger": "contains_any(menu, apa ada, harga)",
+              "response": "Ini menu kami. Balas dengan nama item dan kuantiti, contohnya 'Nasi Lemak 2, Teh Tarik 1'."
+            },
+            {
+              "id": "order-confirmation",
+              "name": "Order confirmation",
+              "trigger": "order_detected",
+              "response": "Terima kasih. Kami sedang siapkan order anda dan invois akan dihantar sebentar lagi."
+            },
+            {
+              "id": "hours",
+              "name": "Business hours",
+              "trigger": "contains_any(open, buka, hours)",
+              "response": "Kami buka setiap hari 9 pagi hingga 9 malam. Nak tengok menu? Balas MENU."
+            }
+          ]
+        },
+        "menuItems": [
+          {
+            "id": "item_p05rakhi",
+            "name": "Nasi Lemak",
+            "price": 8,
+            "category": "Main"
+          },
+          {
+            "id": "item_fv7o230g",
+            "name": "Teh Tarik",
+            "price": 3,
+            "category": "Drinks"
+          },
+          {
+            "id": "item_9bku0zpe",
+            "name": "Kuih",
+            "price": 4.5,
+            "category": "Dessert"
+          }
+        ],
+        "whatsapp": {
+          "status": "skipped",
+          "phoneNumber": "60199887766",
+          "connectedAt": null,
+          "testRecipient": "60199887766"
+        },
+        "workflows": [],
+        "invoices": [],
+        "events": [
+          {
+            "id": "evt_l9qccw3c",
+            "event": "signup_completed",
+            "timestamp": "2026-03-27T04:01:01.771Z",
+            "properties": {
+              "source": "Meta Ads"
+            }
+          },
+          {
+            "id": "evt_8jdd15qr",
+            "event": "onboarding_started",
+            "timestamp": "2026-03-27T04:01:01.771Z",
+            "properties": {}
+          },
+          {
+            "id": "evt_hg3sad0q",
+            "event": "onboarding_step_completed",
+            "timestamp": "2026-03-27T04:01:01.772Z",
+            "properties": {
+              "step_name": "business_profile"
+            }
+          },
+          {
+            "id": "evt_jihgy2xb",
+            "event": "onboarding_step_completed",
+            "timestamp": "2026-03-27T04:01:01.806Z",
+            "properties": {
+              "step_name": "template_generation"
+            }
+          },
+          {
+            "id": "evt_y035fp70",
+            "event": "menu_items_added",
+            "timestamp": "2026-03-27T04:01:01.840Z",
+            "properties": {
+              "count": 3,
+              "method": "csv"
+            }
+          },
+          {
+            "id": "evt_6bwueb7q",
+            "event": "onboarding_step_skipped",
+            "timestamp": "2026-03-27T04:01:01.861Z",
+            "properties": {
+              "step_name": "whatsapp_connection"
+            }
+          }
+        ],
+        "credentials": {
+          "hasLhdnCredentials": false,
+          "hasWhatsAppCredentials": false,
+          "createdAt": null,
+          "lhdnClientIdMasked": "",
+          "whatsappPhoneNumberIdMasked": ""
+        },
+        "suggestedMenuItems": [
+          {
+            "id": "item_p05rakhi",
+            "name": "Nasi Lemak",
+            "price": 8,
+            "category": "Main"
+          },
+          {
+            "id": "item_fv7o230g",
+            "name": "Teh Tarik",
+            "price": 3,
+            "category": "Drinks"
+          },
+          {
+            "id": "item_9bku0zpe",
+            "name": "Kuih",
+            "price": 4.5,
+            "category": "Dessert"
+          }
+        ],
+        "stepStatuses": [
+          {
+            "id": "business_profile",
+            "label": "Business profile",
+            "description": "Capture enough business context to pre-configure the workspace.",
+            "terminalState": "BUSINESS_PROFILE_COMPLETED",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "template_generation",
+            "label": "Template generation",
+            "description": "Generate invoice and WhatsApp defaults automatically.",
+            "terminalState": "TEMPLATES_READY",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "data_import",
+            "label": "Menu import",
+            "description": "Import or manually add sellable items for invoicing.",
+            "terminalState": "MENU_READY",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "whatsapp_connection",
+            "label": "WhatsApp connection",
+            "description": "Connect or deliberately skip the messaging channel.",
+            "terminalState": "WHATSAPP_CONNECTED",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "first_invoice",
+            "label": "First invoice",
+            "description": "Create and send the first invoice to trigger activation.",
+            "terminalState": "FIRST_INVOICE_SENT",
+            "completed": false,
+            "current": true
+          }
+        ]
+      },
+      "dashboard": {
+        "activationDefinition": {
+          "code": "activation_qualified",
+          "description": "A business activates when it sends its first successful invoice or executes its first successful workflow.",
+          "qualifiesOn": [
+            "invoice_sent",
+            "workflow_executed"
+          ],
+          "successWindowHours": 24
+        },
+        "headline": {
+          "signups": 1,
+          "activated": 0,
+          "activationRate": 0,
+          "onboardingCompletionRate": 0,
+          "timeToActivationMinutes": null,
+          "invoicesIssued": 0,
+          "revenue": 0,
+          "cac": 180
+        },
+        "completionRates": [
+          {
+            "stepId": "business_profile",
+            "label": "Business profile",
+            "completionRate": 100
+          },
+          {
+            "stepId": "template_generation",
+            "label": "Template generation",
+            "completionRate": 100
+          },
+          {
+            "stepId": "data_import",
+            "label": "Menu import",
+            "completionRate": 100
+          },
+          {
+            "stepId": "whatsapp_connection",
+            "label": "WhatsApp connection",
+            "completionRate": 100
+          },
+          {
+            "stepId": "first_invoice",
+            "label": "First invoice",
+            "completionRate": 0
+          }
+        ],
+        "dropOffPoints": {
+          "WHATSAPP_SKIPPED": 1
+        },
+        "acquisitionHooks": [
+          {
+            "id": "seed-meta",
+            "channel": "Meta Ads",
+            "spend": 900,
+            "leads": 22,
+            "customers": 5,
+            "createdAt": "2026-03-24T09:00:00.000Z"
+          }
+        ],
+        "recentLogs": [
+          {
+            "id": "log_p7yklb2a",
+            "timestamp": "2026-03-27T04:01:01.861Z",
+            "action": "whatsapp_skipped",
+            "details": {
+              "businessId": "biz_3nvlfi7p",
+              "phoneNumber": "60199887766",
+              "testRecipient": "60199887766"
+            }
+          },
+          {
+            "id": "log_mbrx4xhc",
+            "action": "menu_import_confirmed",
+            "timestamp": "2026-03-27T04:01:01.840Z",
+            "details": {
+              "businessId": "biz_3nvlfi7p",
+              "itemCount": 3,
+              "source": "csv"
+            }
+          },
+          {
+            "id": "log_qrvol4bt",
+            "action": "templates_generated",
+            "timestamp": "2026-03-27T04:01:01.806Z",
+            "details": {
+              "businessId": "biz_3nvlfi7p"
+            }
+          },
+          {
+            "id": "log_ga9qep1x",
+            "action": "business_profile_saved",
+            "timestamp": "2026-03-27T04:01:01.772Z",
+            "details": {
+              "businessId": "biz_3nvlfi7p",
+              "businessName": "Warung Pagi Bahagia"
+            }
+          }
+        ],
+        "appliedOptimizations": [],
+        "interventions": []
+      }
+    }
+  },
+  {
+    "step": "first_invoice",
+    "status": 201,
+    "timestamp": "2026-03-27T04:01:01.894Z",
+    "body": {
+      "activationDefinition": {
+        "code": "activation_qualified",
+        "description": "A business activates when it sends its first successful invoice or executes its first successful workflow.",
+        "qualifiesOn": [
+          "invoice_sent",
+          "workflow_executed"
+        ],
+        "successWindowHours": 24
+      },
+      "steps": [
+        {
+          "id": "business_profile",
+          "label": "Business profile",
+          "description": "Capture enough business context to pre-configure the workspace.",
+          "terminalState": "BUSINESS_PROFILE_COMPLETED"
+        },
+        {
+          "id": "template_generation",
+          "label": "Template generation",
+          "description": "Generate invoice and WhatsApp defaults automatically.",
+          "terminalState": "TEMPLATES_READY"
+        },
+        {
+          "id": "data_import",
+          "label": "Menu import",
+          "description": "Import or manually add sellable items for invoicing.",
+          "terminalState": "MENU_READY"
+        },
+        {
+          "id": "whatsapp_connection",
+          "label": "WhatsApp connection",
+          "description": "Connect or deliberately skip the messaging channel.",
+          "terminalState": "WHATSAPP_CONNECTED"
+        },
+        {
+          "id": "first_invoice",
+          "label": "First invoice",
+          "description": "Create and send the first invoice to trigger activation.",
+          "terminalState": "FIRST_INVOICE_SENT"
+        }
+      ],
+      "menuFields": [
+        "name",
+        "price",
+        "category"
+      ],
+      "businessTypes": [
+        "Restoran / Kafe",
+        "Bakeri / Kek",
+        "Catering",
+        "Food Stall / Gerai",
+        "Lain-lain"
+      ],
+      "orderChannels": [
+        "WhatsApp",
+        "Walk-in",
+        "Grab/Foodpanda",
+        "Phone call"
+      ],
+      "businesses": [
+        {
+          "id": "biz_3nvlfi7p",
+          "businessName": "Warung Pagi Bahagia",
+          "ownerName": "Nurul",
+          "createdAt": "2026-03-27T04:01:01.770Z",
+          "activationAt": "2026-03-27T04:01:01.885Z",
+          "onboardingState": "ACTIVATED",
+          "isActive": true,
+          "credentials": {
+            "hasLhdnCredentials": false,
+            "hasWhatsAppCredentials": false,
+            "createdAt": null,
+            "lhdnClientIdMasked": "",
+            "whatsappPhoneNumberIdMasked": ""
+          }
+        }
+      ],
+      "activeBusiness": {
+        "id": "biz_3nvlfi7p",
+        "createdAt": "2026-03-27T04:01:01.770Z",
+        "updatedAt": "2026-03-27T04:01:01.885Z",
+        "activationAt": "2026-03-27T04:01:01.885Z",
+        "onboardingState": "ACTIVATED",
+        "completedSteps": [
+          "business_profile",
+          "template_generation",
+          "data_import",
+          "whatsapp_connection",
+          "first_invoice"
+        ],
+        "profile": {
+          "businessName": "Warung Pagi Bahagia",
+          "businessType": "Restoran / Kafe",
+          "ownerName": "Nurul",
+          "phone": "60199887766",
+          "email": "nurul@example.com",
+          "orderChannels": [
+            "WhatsApp",
+            "Walk-in"
+          ],
+          "leadSource": "Meta Ads",
+          "registrationNumber": "",
+          "tinNumber": "",
+          "sstNumber": "",
+          "addressLine1": "",
+          "addressLine2": "",
+          "addressLine3": "",
+          "city": "",
+          "postcode": "",
+          "stateCode": "",
+          "countryCode": "MYS",
+          "msicCode": ""
+        },
+        "templates": {
+          "invoice": {
+            "invoice": {
+              "header": {
+                "invoice_number": "INV-{auto_increment}",
+                "date_issued": "{ISO_8601_datetime}",
+                "due_date": "{ISO_8601_datetime}",
+                "currency": "MYR",
+                "status": "draft",
+                "lhdn_compliance": {
+                  "version": "1.0",
+                  "tin_number": "PENDING_TIN",
+                  "brn_number": "PENDING_BRN",
+                  "msic_code": "56101",
+                  "sst_registration": null,
+                  "e_invoice_uuid": "{uuid_v4}"
+                }
+              },
+              "seller": {
+                "name": "Warung Pagi Bahagia",
+                "phone": "60199887766",
+                "email": "nurul@example.com"
+              },
+              "buyer": {
+                "name": "Walk-in Customer",
+                "phone": null
+              },
+              "items": [],
+              "totals": {
+                "subtotal": 0,
+                "tax_total": 0,
+                "discount": 0,
+                "grand_total": 0
+              }
+            }
+          },
+          "whatsapp": [
+            {
+              "id": "menu-request",
+              "name": "Menu request",
+              "trigger": "contains_any(menu, apa ada, harga)",
+              "response": "Ini menu kami. Balas dengan nama item dan kuantiti, contohnya 'Nasi Lemak 2, Teh Tarik 1'."
+            },
+            {
+              "id": "order-confirmation",
+              "name": "Order confirmation",
+              "trigger": "order_detected",
+              "response": "Terima kasih. Kami sedang siapkan order anda dan invois akan dihantar sebentar lagi."
+            },
+            {
+              "id": "hours",
+              "name": "Business hours",
+              "trigger": "contains_any(open, buka, hours)",
+              "response": "Kami buka setiap hari 9 pagi hingga 9 malam. Nak tengok menu? Balas MENU."
+            }
+          ]
+        },
+        "menuItems": [
+          {
+            "id": "item_p05rakhi",
+            "name": "Nasi Lemak",
+            "price": 8,
+            "category": "Main"
+          },
+          {
+            "id": "item_fv7o230g",
+            "name": "Teh Tarik",
+            "price": 3,
+            "category": "Drinks"
+          },
+          {
+            "id": "item_9bku0zpe",
+            "name": "Kuih",
+            "price": 4.5,
+            "category": "Dessert"
+          }
+        ],
+        "whatsapp": {
+          "status": "skipped",
+          "phoneNumber": "60199887766",
+          "connectedAt": null,
+          "testRecipient": "60199887766"
+        },
+        "workflows": [],
+        "invoices": [
+          {
+            "id": "inv_64ctfxtu",
+            "invoiceNumber": "INV-0001",
+            "status": "issued",
+            "issuedAt": "2026-03-27T04:01:01.885Z",
+            "buyer": {
+              "name": "First Customer",
+              "phone": "60125554444"
+            },
+            "items": [
+              {
+                "itemId": "item_p05rakhi",
+                "name": "Nasi Lemak",
+                "category": "Main",
+                "quantity": 2,
+                "unitPrice": 8,
+                "subtotal": 16
+              },
+              {
+                "itemId": "item_fv7o230g",
+                "name": "Teh Tarik",
+                "category": "Drinks",
+                "quantity": 1,
+                "unitPrice": 3,
+                "subtotal": 3
+              }
+            ],
+            "totals": {
+              "subtotal": 19,
+              "taxTotal": 1.14,
+              "grandTotal": 20.14
+            },
+            "lhdn": {
+              "status": "pending",
+              "uuid": null,
+              "submissionUid": null,
+              "submittedAt": null,
+              "response": null
+            }
+          }
+        ],
+        "events": [
+          {
+            "id": "evt_l9qccw3c",
+            "event": "signup_completed",
+            "timestamp": "2026-03-27T04:01:01.771Z",
+            "properties": {
+              "source": "Meta Ads"
+            }
+          },
+          {
+            "id": "evt_8jdd15qr",
+            "event": "onboarding_started",
+            "timestamp": "2026-03-27T04:01:01.771Z",
+            "properties": {}
+          },
+          {
+            "id": "evt_hg3sad0q",
+            "event": "onboarding_step_completed",
+            "timestamp": "2026-03-27T04:01:01.772Z",
+            "properties": {
+              "step_name": "business_profile"
+            }
+          },
+          {
+            "id": "evt_jihgy2xb",
+            "event": "onboarding_step_completed",
+            "timestamp": "2026-03-27T04:01:01.806Z",
+            "properties": {
+              "step_name": "template_generation"
+            }
+          },
+          {
+            "id": "evt_y035fp70",
+            "event": "menu_items_added",
+            "timestamp": "2026-03-27T04:01:01.840Z",
+            "properties": {
+              "count": 3,
+              "method": "csv"
+            }
+          },
+          {
+            "id": "evt_6bwueb7q",
+            "event": "onboarding_step_skipped",
+            "timestamp": "2026-03-27T04:01:01.861Z",
+            "properties": {
+              "step_name": "whatsapp_connection"
+            }
+          },
+          {
+            "id": "evt_3ggp161i",
+            "event": "invoice_created",
+            "timestamp": "2026-03-27T04:01:01.885Z",
+            "properties": {
+              "invoice_type": "real",
+              "items_count": 2,
+              "amount": 20.14
+            }
+          },
+          {
+            "id": "evt_tol9riyv",
+            "event": "order_created",
+            "timestamp": "2026-03-27T04:01:01.885Z",
+            "properties": {
+              "source": "dashboard",
+              "items_count": 2,
+              "amount": 20.14
+            }
+          },
+          {
+            "id": "evt_jzfa22i8",
+            "event": "activation_qualified",
+            "timestamp": "2026-03-27T04:01:01.885Z",
+            "properties": {
+              "qualifyingAction": "invoice_sent",
+              "invoiceNumber": "INV-0001",
+              "totalAmount": 20.14,
+              "time_to_activation_minutes": 0
+            }
+          }
+        ],
+        "credentials": {
+          "hasLhdnCredentials": false,
+          "hasWhatsAppCredentials": false,
+          "createdAt": null,
+          "lhdnClientIdMasked": "",
+          "whatsappPhoneNumberIdMasked": ""
+        },
+        "suggestedMenuItems": [
+          {
+            "id": "item_p05rakhi",
+            "name": "Nasi Lemak",
+            "price": 8,
+            "category": "Main"
+          },
+          {
+            "id": "item_fv7o230g",
+            "name": "Teh Tarik",
+            "price": 3,
+            "category": "Drinks"
+          },
+          {
+            "id": "item_9bku0zpe",
+            "name": "Kuih",
+            "price": 4.5,
+            "category": "Dessert"
+          }
+        ],
+        "stepStatuses": [
+          {
+            "id": "business_profile",
+            "label": "Business profile",
+            "description": "Capture enough business context to pre-configure the workspace.",
+            "terminalState": "BUSINESS_PROFILE_COMPLETED",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "template_generation",
+            "label": "Template generation",
+            "description": "Generate invoice and WhatsApp defaults automatically.",
+            "terminalState": "TEMPLATES_READY",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "data_import",
+            "label": "Menu import",
+            "description": "Import or manually add sellable items for invoicing.",
+            "terminalState": "MENU_READY",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "whatsapp_connection",
+            "label": "WhatsApp connection",
+            "description": "Connect or deliberately skip the messaging channel.",
+            "terminalState": "WHATSAPP_CONNECTED",
+            "completed": true,
+            "current": false
+          },
+          {
+            "id": "first_invoice",
+            "label": "First invoice",
+            "description": "Create and send the first invoice to trigger activation.",
+            "terminalState": "FIRST_INVOICE_SENT",
+            "completed": true,
+            "current": false
+          }
+        ]
+      },
+      "dashboard": {
+        "activationDefinition": {
+          "code": "activation_qualified",
+          "description": "A business activates when it sends its first successful invoice or executes its first successful workflow.",
+          "qualifiesOn": [
+            "invoice_sent",
+            "workflow_executed"
+          ],
+          "successWindowHours": 24
+        },
+        "headline": {
+          "signups": 1,
+          "activated": 1,
+          "activationRate": 100,
+          "onboardingCompletionRate": 100,
+          "timeToActivationMinutes": 0,
+          "invoicesIssued": 1,
+          "revenue": 20.14,
+          "cac": 180
+        },
+        "completionRates": [
+          {
+            "stepId": "business_profile",
+            "label": "Business profile",
+            "completionRate": 100
+          },
+          {
+            "stepId": "template_generation",
+            "label": "Template generation",
+            "completionRate": 100
+          },
+          {
+            "stepId": "data_import",
+            "label": "Menu import",
+            "completionRate": 100
+          },
+          {
+            "stepId": "whatsapp_connection",
+            "label": "WhatsApp connection",
+            "completionRate": 100
+          },
+          {
+            "stepId": "first_invoice",
+            "label": "First invoice",
+            "completionRate": 100
+          }
+        ],
+        "dropOffPoints": {},
+        "acquisitionHooks": [
+          {
+            "id": "seed-meta",
+            "channel": "Meta Ads",
+            "spend": 900,
+            "leads": 22,
+            "customers": 5,
+            "createdAt": "2026-03-24T09:00:00.000Z"
+          }
+        ],
+        "recentLogs": [
+          {
+            "id": "log_0154jjbt",
+            "timestamp": "2026-03-27T04:01:01.885Z",
+            "action": "invoice_sent",
+            "details": {
+              "businessId": "biz_3nvlfi7p",
+              "invoiceNumber": "INV-0001"
+            }
+          },
+          {
+            "id": "log_p7yklb2a",
+            "action": "whatsapp_skipped",
+            "timestamp": "2026-03-27T04:01:01.861Z",
+            "details": {
+              "businessId": "biz_3nvlfi7p",
+              "phoneNumber": "60199887766",
+              "testRecipient": "60199887766"
+            }
+          },
+          {
+            "id": "log_mbrx4xhc",
+            "action": "menu_import_confirmed",
+            "timestamp": "2026-03-27T04:01:01.840Z",
+            "details": {
+              "businessId": "biz_3nvlfi7p",
+              "itemCount": 3,
+              "source": "csv"
+            }
+          },
+          {
+            "id": "log_qrvol4bt",
+            "action": "templates_generated",
+            "timestamp": "2026-03-27T04:01:01.806Z",
+            "details": {
+              "businessId": "biz_3nvlfi7p"
+            }
+          },
+          {
+            "id": "log_ga9qep1x",
+            "action": "business_profile_saved",
+            "timestamp": "2026-03-27T04:01:01.772Z",
+            "details": {
+              "businessId": "biz_3nvlfi7p",
+              "businessName": "Warung Pagi Bahagia"
+            }
+          }
+        ],
+        "appliedOptimizations": [],
+        "interventions": []
+      }
+    }
+  },
+  {
+    "step": "dashboard_summary",
+    "status": 200,
+    "timestamp": "2026-03-27T04:01:01.906Z",
+    "body": {
+      "activationDefinition": {
+        "code": "activation_qualified",
+        "description": "A business activates when it sends its first successful invoice or executes its first successful workflow.",
+        "qualifiesOn": [
+          "invoice_sent",
+          "workflow_executed"
+        ],
+        "successWindowHours": 24
+      },
+      "headline": {
+        "signups": 1,
+        "activated": 1,
+        "activationRate": 100,
+        "onboardingCompletionRate": 100,
+        "timeToActivationMinutes": 0,
+        "invoicesIssued": 1,
+        "revenue": 20.14,
+        "cac": 180
+      },
+      "completionRates": [
+        {
+          "stepId": "business_profile",
+          "label": "Business profile",
+          "completionRate": 100
+        },
+        {
+          "stepId": "template_generation",
+          "label": "Template generation",
+          "completionRate": 100
+        },
+        {
+          "stepId": "data_import",
+          "label": "Menu import",
+          "completionRate": 100
+        },
+        {
+          "stepId": "whatsapp_connection",
+          "label": "WhatsApp connection",
+          "completionRate": 100
+        },
+        {
+          "stepId": "first_invoice",
+          "label": "First invoice",
+          "completionRate": 100
+        }
+      ],
+      "dropOffPoints": {},
+      "acquisitionHooks": [
+        {
+          "id": "seed-meta",
+          "channel": "Meta Ads",
+          "spend": 900,
+          "leads": 22,
+          "customers": 5,
+          "createdAt": "2026-03-24T09:00:00.000Z"
+        }
+      ],
+      "recentLogs": [
+        {
+          "id": "log_0154jjbt",
+          "action": "invoice_sent",
+          "timestamp": "2026-03-27T04:01:01.885Z",
+          "details": {
+            "businessId": "biz_3nvlfi7p",
+            "invoiceNumber": "INV-0001"
+          }
+        },
+        {
+          "id": "log_p7yklb2a",
+          "action": "whatsapp_skipped",
+          "timestamp": "2026-03-27T04:01:01.861Z",
+          "details": {
+            "businessId": "biz_3nvlfi7p",
+            "phoneNumber": "60199887766",
+            "testRecipient": "60199887766"
+          }
+        },
+        {
+          "id": "log_mbrx4xhc",
+          "action": "menu_import_confirmed",
+          "timestamp": "2026-03-27T04:01:01.840Z",
+          "details": {
+            "businessId": "biz_3nvlfi7p",
+            "itemCount": 3,
+            "source": "csv"
+          }
+        },
+        {
+          "id": "log_qrvol4bt",
+          "action": "templates_generated",
+          "timestamp": "2026-03-27T04:01:01.806Z",
+          "details": {
+            "businessId": "biz_3nvlfi7p"
+          }
+        },
+        {
+          "id": "log_ga9qep1x",
+          "action": "business_profile_saved",
+          "timestamp": "2026-03-27T04:01:01.772Z",
+          "details": {
+            "businessId": "biz_3nvlfi7p",
+            "businessName": "Warung Pagi Bahagia"
+          }
+        }
+      ],
+      "appliedOptimizations": [],
+      "interventions": []
+    }
+  }
+]

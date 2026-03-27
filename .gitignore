@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.local
+server/runtime/
+app/server/runtime/
+coverage/
+*.sqlite
+*.db
+.DS_Store
