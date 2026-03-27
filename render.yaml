@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: tapau-gtm-engine
+    env: node
+    rootDir: app
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    disk:
+      name: sqlite-data
+      mountPath: /opt/render/project/src/app/server/runtime
+      sizeGB: 1
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: APP_ENCRYPTION_KEY
+        generateValue: true
