@@ -3,10 +3,10 @@ const DEFAULT_GRAPH_VERSION = 'v17.0';
 export function getWhatsAppConfig({ business, credentials = {}, overrides = {} } = {}) {
   return {
     graphVersion: overrides.graphVersion || process.env.WHATSAPP_GRAPH_VERSION || DEFAULT_GRAPH_VERSION,
-    accessToken: overrides.accessToken || credentials.whatsappAccessToken || '',
-    phoneNumberId: overrides.phoneNumberId || credentials.whatsappPhoneNumberId || '',
-    verifyToken: overrides.verifyToken || credentials.whatsappVerifyToken || '',
-    testRecipient: overrides.testRecipient || business?.whatsapp?.testRecipient || business?.whatsapp?.phoneNumber || '',
+    accessToken: overrides.accessToken || credentials.whatsappAccessToken || process.env.WHATSAPP_ACCESS_TOKEN || '',
+    phoneNumberId: overrides.phoneNumberId || credentials.whatsappPhoneNumberId || process.env.WHATSAPP_PHONE_NUMBER_ID || '',
+    verifyToken: overrides.verifyToken || credentials.whatsappVerifyToken || process.env.WHATSAPP_VERIFY_TOKEN || '',
+    testRecipient: overrides.testRecipient || business?.whatsapp?.testRecipient || business?.whatsapp?.phoneNumber || process.env.WHATSAPP_TEST_RECIPIENT || '',
   };
 }
 

@@ -19,8 +19,8 @@ export function getLhdnConfig({ credentials = {}, overrides = {} } = {}) {
   return {
     apiBaseUrl,
     identityBaseUrl,
-    clientId: overrides.clientId || credentials.lhdnClientId || '',
-    clientSecret: overrides.clientSecret || credentials.lhdnClientSecret || '',
+    clientId: overrides.clientId || credentials.lhdnClientId || process.env.LHDN_CLIENT_ID || '',
+    clientSecret: overrides.clientSecret || credentials.lhdnClientSecret || process.env.LHDN_CLIENT_SECRET || '',
     scope: overrides.scope || process.env.LHDN_SCOPE || '',
     defaultBuyerTin: process.env.LHDN_DEFAULT_BUYER_TIN || DEFAULT_GENERAL_BUYER_TIN,
     supplierAddressLine1: process.env.LHDN_SUPPLIER_ADDRESS_LINE1 || 'Lot 66',
