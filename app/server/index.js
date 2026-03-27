@@ -14,7 +14,7 @@ const port = Number(process.env.PORT || 3001);
 
 if (fs.existsSync(distDir)) {
   app.use(express.static(distDir));
-  app.get('*', (request, response, next) => {
+  app.get('/{*splat}', (request, response, next) => {
     if (request.path.startsWith('/api')) {
       next();
       return;
