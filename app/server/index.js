@@ -23,6 +23,6 @@ if (fs.existsSync(distDir)) {
   });
 }
 
-app.listen(port, () => {
-  console.log(`Tapau GTM API listening on http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Tapau GTM API listening on http://0.0.0.0:${port}`);
 });
